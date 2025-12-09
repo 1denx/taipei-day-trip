@@ -1,6 +1,5 @@
 from fastapi import FastAPI, Depends, Request
 from fastapi.responses import FileResponse
-from database.db import get_db_conn, pool
 
 app=FastAPI()
 
@@ -18,15 +17,3 @@ async def booking(request: Request):
 async def thankyou(request: Request):
 	return FileResponse("./static/thankyou.html", media_type="text/html")
 
-@app.on_event("startup")
-def test_db_connection():
-    try:
-        conn = pool.get_connection()
-        cursor = conn.cursor()
-        cursor.execute("SELECT 1;")
-        cursor.fetchone()
-        cursor.close()
-        conn.close()
-        print("資料庫連線成功！")
-    except Exception as e:
-        print("無法連線資料庫：", e)
