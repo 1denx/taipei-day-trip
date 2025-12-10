@@ -93,6 +93,19 @@ def get_single_attraction(conn, cursor, attraction_id: int):
 
 	return row
 
+def get_categories_list(conn, cursor):
+	query = """
+		SELECT DISTINCT category
+		FROM attractions
+		WHERE category IS NOT NULL
+		ORDER BY category
+	"""
+	cursor.execute(query)
+	rows = cursor.fetchall()
+	result = [row["category"] for row in rows]
+
+	return result
+
 @app.get("/api/attractions")
 async def attraction_api(
 	request: Request,
@@ -148,6 +161,21 @@ async def attraction_id_api(
 				status_code=400
 			)
 		return {"data": data}
+	
+	except Exception as e:
+		print("[ERROR]", e)
+		return JSONResponse(
+			content={"error": True, "message": "伺服器錯誤"},
+			status_code=500
+		)
+
+@app.get('/api/categories')
+async def categories_api(db=Depends(get_db_conn)):
+	conn,cursor = db
+
+	try:
+		categories = get_categories_list(conn, cursor)
+		return {"data": categories}
 	
 	except Exception as e:
 		print("[ERROR]", e)
