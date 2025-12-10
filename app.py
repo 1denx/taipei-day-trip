@@ -70,6 +70,12 @@ def get_attractions_list(
 			row["images"] = json.loads(row["images"])
 		except:
 			row["images"] = []
+		
+		for key in ("lat", "lng"):
+			try:
+				row[key] = float(row[key])
+			except:
+				row[key] = None
 	
 	return rows, next_page
 
@@ -170,7 +176,7 @@ async def attraction_id_api(
 
 		if not data:
 			return JSONResponse(
-				content={"error": True, "message": "景點不存在"},
+				content={"error": True, "message": "景點編號不正確"},
 				status_code=400
 			)
 		return {"data": data}
