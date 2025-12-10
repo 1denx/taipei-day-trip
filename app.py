@@ -43,11 +43,11 @@ def get_attractions_list(
 		conditions.append("category  = %s")
 		params.append(category)
 
-	# keyword 模糊搜尋 name / mrt / description
+	# keyword 模糊搜尋 name LIKE + mrt 完全比對
 	if keyword:
 		like = f"%{keyword}%"
-		conditions.append("(name LIKE %s OR mrt LIKE %s OR description LIKE %s)")
-		params.extend([like, like, like])
+		conditions.append("(name LIKE %s OR mrt = %s)")
+		params.extend([like, keyword])
 
 	if conditions:
 		base_query += " WHERE " + " AND ".join(conditions)
