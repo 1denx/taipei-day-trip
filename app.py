@@ -106,6 +106,19 @@ def get_categories_list(conn, cursor):
 
 	return result
 
+def get_mrt_list(conn, cursor):
+	query = """
+		SELECT DISTINCT mrt
+		FROM attractions
+		WHERE mrt IS NOT NULL AND mrt != 'Unknown'
+		ORDER BY mrt
+	"""
+	cursor.execute(query)
+	rows = cursor.fetchall()
+	result = [row["mrt"] for row in rows]
+
+	return result
+
 @app.get("/api/attractions")
 async def attraction_api(
 	request: Request,
@@ -177,6 +190,21 @@ async def categories_api(db=Depends(get_db_conn)):
 		categories = get_categories_list(conn, cursor)
 		return {"data": categories}
 	
+	except Exception as e:
+		print("[ERROR]", e)
+		return JSONResponse(
+			content={"error": True, "message": "伺服器錯誤"},
+			status_code=500
+		)
+
+@app.get("/api/mrts")
+async def mrt_api(db=Depends(get_db_conn)):
+	conn, cursor = db
+
+	try:
+		mrts = get_mrt_list(conn, cursor)
+		return {"data": mrts}
+
 	except Exception as e:
 		print("[ERROR]", e)
 		return JSONResponse(
