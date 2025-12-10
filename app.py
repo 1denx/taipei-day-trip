@@ -73,6 +73,26 @@ def get_attractions_list(
 	
 	return rows, next_page
 
+def get_single_attraction(conn, cursor, attraction_id: int):
+	query = """
+		SELECT id, name, category, description, address, transport, mrt, lat, lng, images
+		FROM attractions
+		WHERE id = %s
+		LIMIT 1
+	"""
+	cursor.execute(query,(attraction_id,))
+	row = cursor.fetchone()
+
+	if not row:
+		return None
+	
+	try:
+		row["images"] = json.loads(row["images"])
+	except:
+		row["images"] = []
+
+	return row
+
 @app.get("/api/attractions")
 async def attraction_api(
 	request: Request,
@@ -112,3 +132,26 @@ async def attraction_api(
 			status_code=500
 		)
 
+@app.get("/api/attraction/{attractionId}")
+async def attraction_id_api(
+	attractionId: int,
+	db=Depends(get_db_conn)
+):
+	conn,cursor = db
+
+	try:
+		data = get_single_attraction(conn, cursor, attractionId)
+
+		if not data:
+			return JSONResponse(
+				content={"error": True, "message": "景點不存在"},
+				status_code=400
+			)
+		return {"data": data}
+	
+	except Exception as e:
+		print("[ERROR]", e)
+		return JSONResponse(
+			content={"error": True, "message": "伺服器錯誤"},
+			status_code=500
+		)
