@@ -1,0 +1,24 @@
+{
+  "name": "taipei-day-trip",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sass": "sass --watch static/scss:static/css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1denx/taipei-day-trip.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/1denx/taipei-day-trip/issues"
+  },
+  "homepage": "https://github.com/1denx/taipei-day-trip#readme",
+  "devDependencies": {
+    "sass": "^1.96.0"
+  }
+}

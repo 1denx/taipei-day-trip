@@ -1,0 +1,48 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixin" as *;
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  padding: 10px 20px;
+  opacity: 1;
+  background-color: transparent;
+
+  &--primary {
+    background-color: $primary-cyan-70;
+    color: $color-white;
+
+    &:hover {
+      background-color: $primary-cyan-50;
+    }
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+.btn--dialog {
+  min-width: 117px;
+  height: 46px;
+}
+
+.btn--booking {
+  min-width: 117px;
+  height: 36px;
+}
+
+.btn--nav {
+  padding: 0;
+  height: auto;
+  min-width: auto;
+  background: none;
+  color: $secondary-gray-70;
+
+  @include text-style($text-body-size, $text-body-line, $font-weight-medium);
+}

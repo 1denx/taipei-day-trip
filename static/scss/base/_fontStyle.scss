@@ -1,0 +1,65 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixin" as *;
+
+// =======================
+// Text Styles
+// =======================
+
+// H1 - Slogan Title
+.text-h1 {
+  @include text-style($text-h1-size, $text-h1-line, $font-weight-bold);
+}
+
+// H2 - Headline
+.text-h2 {
+  @include text-style($text-h2-size, $text-h2-line, $font-weight-bold);
+}
+
+// H3 - Dialog Title
+.text-h3-bold {
+  @include text-style($text-h3-size, $text-h3-line, $font-weight-bold);
+}
+
+.text-h3-regular {
+  @include text-style($text-h3-size, $text-h3-line, $font-weight-regular);
+}
+
+// Button
+.text-btn-bold {
+  @include text-style($text-btn-size, $text-btn-line, $font-weight-bold);
+}
+
+.text-btn-regular {
+  @include text-style($text-btn-size, $text-btn-line, $font-weight-regular);
+}
+
+// Content
+.text-content-bold {
+  @include text-style(
+    $text-content-size,
+    $text-content-line,
+    $font-weight-bold
+  );
+}
+
+.text-content-regular {
+  @include text-style(
+    $text-content-size,
+    $text-content-line,
+    $font-weight-regular
+  );
+}
+
+// Body
+.text-body-bold {
+  @include text-style($text-body-size, $text-body-line, $font-weight-bold);
+}
+
+.text-body-medium {
+  @include text-style($text-body-size, $text-body-line, $font-weight-medium);
+}
+
+// List
+.text-list {
+  @include text-style($text-list-size, $text-list-line, $font-weight-medium);
+}

@@ -1,0 +1,64 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixin" as *;
+
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap");
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  /* Primary */
+  --primary-cyan-70: #{$primary-cyan-70};
+  --primary-cyan-50: #{$primary-cyan-50};
+  --primary-cyan-20: #{$primary-cyan-20};
+
+  /* Secondary */
+  --secondary-gray-70: #{$secondary-gray-70};
+  --secondary-gray-50: #{$secondary-gray-50};
+  --secondary-gray-20: #{$secondary-gray-20};
+  --secondary-gray-10: #{$secondary-gray-10};
+
+  /* Additional */
+  --white: #{$color-white};
+  --black: #{$color-black};
+  --gray-500: #{$color-gray-500};
+
+  /* Gradients */
+  --gradient-light-cyan: #{$gradient-light-cyan};
+  --gradient-dark-cyan: #{$gradient-dark-cyan};
+}
+
+body {
+  font-family: "Noto Sans TC";
+  line-height: 1.5;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  @include pad {
+    max-width: 90%;
+  }
+  @include mobile {
+    max-width: 90%;
+  }
+}
+
+img {
+  max-width: 100%;
+  vertical-align: middle;
+  height: auto;
+  object-fit: cover;
+}
+
+a {
+  display: inline-block;
+  color: inherit;
+  text-decoration: none;
+  &:hover {
+    opacity: 0.8;
+  }
+}
