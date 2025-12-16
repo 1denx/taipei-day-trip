@@ -6,5 +6,54 @@
     <link rel="stylesheet" href="css/all.css" />
     <title>Index</title>
   </head>
-  <body></body>
+  <body>
+    <header class="container flex-between">
+      <h2 class="header__title text-h2">台北一日遊</h2>
+      <ul class="flex-center">
+        <li><button type="button" class="btn btn--nav">預定行程</button></li>
+        <li><button type="button" class="btn btn--nav">登入/註冊</button></li>
+      </ul>
+    </header>
+    <main>
+      <section class="hero">
+        <div class="container hero__content">
+          <div class="hero__title">
+            <h1 class="text-h1 mb-15">輕鬆享受台北一日悠閒</h1>
+            <p class="text-body-bold mb-25">
+              探索每個角落，體驗城市的深度旅遊行程
+            </p>
+          </div>
+          <div class="search-bar">
+            <div class="selector">
+              <button type="button" class="selector__trigger">
+                <span class="selector__text">全部分類</span>
+                <span class="selector__arrow"></span>
+              </button>
+              <ul class="selector__options">
+                <li data-value="1">Option 1</li>
+                <li data-value="2">Option 2</li>
+                <li data-value="3">Option 3</li>
+              </ul>
+            </div>
+
+            <input
+              id="search-input"
+              type="text"
+              class="text-body-bold"
+              placeholder="輸入景點名稱查詢"
+            />
+            <button type="button" class="btn">
+              <img src="/static/images/icon_search.png" alt="icon_search" />
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <p class="footer__content text-body-bold text-center">
+        COPYRIGHT © 2021 台北一日遊
+      </p>
+    </footer>
+    <script src="/static/script/index.js"></script>
+  </body>
 </html>

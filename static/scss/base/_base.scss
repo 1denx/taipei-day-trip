@@ -43,7 +43,7 @@ body {
     max-width: 90%;
   }
   @include mobile {
-    max-width: 90%;
+    padding: 10px;
   }
 }
 

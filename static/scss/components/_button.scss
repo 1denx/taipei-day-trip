@@ -8,16 +8,39 @@
   border-radius: 5px;
   border: none;
   cursor: pointer;
-  padding: 10px 20px;
   opacity: 1;
   background-color: transparent;
 
   &--primary {
     background-color: $primary-cyan-70;
     color: $color-white;
-
+    padding: 10px 20px;
     &:hover {
       background-color: $primary-cyan-50;
+    }
+  }
+
+  &--dialog {
+    padding: 10px 20px;
+    &:hover {
+      background-color: $primary-cyan-50;
+    }
+  }
+  &--booking {
+    min-width: 117px;
+    height: 36px;
+  }
+  &--nav {
+    padding: 10px;
+    height: auto;
+    min-width: auto;
+    background: none;
+    color: $secondary-gray-70;
+
+    @include text-style($text-body-size, $text-body-line, $font-weight-medium);
+
+    &:hover {
+      color: $secondary-gray-50;
     }
   }
 
@@ -25,24 +48,4 @@
     cursor: not-allowed;
     opacity: 0.5;
   }
-}
-
-.btn--dialog {
-  min-width: 117px;
-  height: 46px;
-}
-
-.btn--booking {
-  min-width: 117px;
-  height: 36px;
-}
-
-.btn--nav {
-  padding: 0;
-  height: auto;
-  min-width: auto;
-  background: none;
-  color: $secondary-gray-70;
-
-  @include text-style($text-body-size, $text-body-line, $font-weight-medium);
 }
