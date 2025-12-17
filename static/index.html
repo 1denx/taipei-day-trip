@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="css/all.css" />
+    <link rel="stylesheet" href="/static/css/all.css" />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@40,200,0,0&icon_names=expand_circle_right"
@@ -53,23 +53,24 @@
         </div>
       </section>
       <section class="container">
-        <ul class="list-bar mt-40 mb-20">
-          <button type="button">
+        <div class="list-bar__wrapper mt-40 mb-20">
+          <button class="control control-left" type="button">
             <span class="material-symbols-outlined expand-icon--left">
               expand_circle_right
             </span>
           </button>
-          <li><a href="#" class="text-list">劍潭</a></li>
-          <li><a href="#" class="text-list">圓山</a></li>
-          <li><a href="#" class="text-list">士林</a></li>
-          <li><a href="#" class="text-list">新北投</a></li>
-          <li><a href="#" class="text-list">臺大醫院</a></li>
-          <button type="button">
+          <div class="list-bar__viewport">
+            <ul class="list-bar">
+              <!-- JS 動態載入 items-->
+            </ul>
+          </div>
+          <button class="control control-right" type="button">
             <span class="material-symbols-outlined expand-icon--right">
               expand_circle_right
             </span>
           </button>
-        </ul>
+        </div>
+
         <div class="gallery mb-40">
           <article class="card">
             <div class="card__cover">
@@ -93,6 +94,6 @@
         COPYRIGHT © 2021 台北一日遊
       </p>
     </footer>
-    <script src="/static/script/index.js"></script>
+    <script src="/static/script/index.js" defer></script>
   </body>
 </html>

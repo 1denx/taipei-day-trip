@@ -2,6 +2,7 @@ from fastapi import FastAPI, Depends, Request, Query
 from fastapi.responses import FileResponse, JSONResponse
 from database.db import get_db_conn
 from typing import Annotated, Optional
+from fastapi.staticfiles import StaticFiles
 import json
 
 app=FastAPI()
@@ -217,3 +218,8 @@ async def mrt_api(db=Depends(get_db_conn)):
 			content={"error": True, "message": "伺服器錯誤"},
 			status_code=500
 		)
+
+
+
+
+app.mount("/static", StaticFiles(directory="static"), name="static")

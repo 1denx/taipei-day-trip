@@ -1,25 +1,44 @@
 @use "../abstracts/variables" as *;
 
-.list-bar {
+.list-bar__wrapper {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 8px;
 
   button {
-    border: none;
-    background-color: transparent;
-  }
-
-  li {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 5px 15px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
     color: $secondary-gray-70;
     &:hover {
       color: $color-black;
     }
   }
+}
+
+.list-bar__viewport {
+  overflow: hidden;
+  width: 100%;
+  max-width: 1086px;
+}
+
+.list-bar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  transition: transform 0.3s ease;
+
+  li {
+    flex-shrink: 0;
+  }
+}
+
+.list-bar li button {
+  padding: 5px 15px;
+  white-space: nowrap;
 }
 
 .material-symbols-outlined.expand-icon--left {

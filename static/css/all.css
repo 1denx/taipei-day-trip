@@ -475,24 +475,43 @@ footer .footer__content {
   background-color: #66aabb;
 }
 
-.list-bar {
+.list-bar__wrapper {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 8px;
 }
-.list-bar button {
-  border: none;
-  background-color: transparent;
-}
-.list-bar li {
+.list-bar__wrapper button {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 5px 15px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
   color: #666666;
 }
-.list-bar li:hover {
+.list-bar__wrapper button:hover {
   color: #000000;
+}
+
+.list-bar__viewport {
+  overflow: hidden;
+  width: 100%;
+  max-width: 1086px;
+}
+
+.list-bar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  transition: transform 0.3s ease;
+}
+.list-bar li {
+  flex-shrink: 0;
+}
+
+.list-bar li button {
+  padding: 5px 15px;
+  white-space: nowrap;
 }
 
 .material-symbols-outlined.expand-icon--left {
