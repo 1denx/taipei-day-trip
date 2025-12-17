@@ -1,0 +1,49 @@
+@use "../abstracts/variables" as *;
+
+.card {
+  background: $color-white;
+  border-radius: 5px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2 ease, box-shadow 0.2 ease;
+
+  &:hover {
+    opacity: 0.8;
+    transition: transform 0.5 ease;
+  }
+
+  &__cover {
+    position: relative;
+  }
+  &__image {
+    aspect-ratio: 4 / 3;
+    filter: contrast(70%);
+    transition: filter 0.5s cubic-bezier(0.43, 0.41, 0.22, 0.91);
+    &:hover {
+      filter: contrast(100%);
+    }
+  }
+
+  &__title {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    z-index: 10;
+    transform: translateX(-50%);
+    width: 100%;
+    padding: 10px;
+    background: $color-black;
+    opacity: 0.6;
+    color: $color-white;
+  }
+
+  &__details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    color: $secondary-gray-50;
+    border: 1px solid $secondary-gray-20;
+    border-radius: 5px;
+  }
+}

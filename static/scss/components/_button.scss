@@ -40,7 +40,7 @@
     @include text-style($text-body-size, $text-body-line, $font-weight-medium);
 
     &:hover {
-      color: $secondary-gray-50;
+      color: $color-black;
     }
   }
 
