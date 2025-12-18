@@ -23,6 +23,8 @@ async function initPage() {
     const attractions = await fetchAttractions();
     // console.log(attractions);
     renderGallery(attractions);
+
+    initInfiniteScroll();
   } catch (err) {
     console.error("初始化失敗", err);
   }
@@ -301,18 +303,12 @@ function createAttractionCard(attraction) {
 }
 
 function renderGallery(attractions) {
-  const gallery = document.querySelector(".gallery");
-
-  gallery.innerHTML = "";
-
-  const fragment = document.createDocumentFragment();
+  const gallery = document.querySelector("#attractions-list");
 
   attractions.forEach((attraction) => {
     const card = createAttractionCard(attraction);
-    fragment.appendChild(card);
+    gallery.appendChild(card);
   });
-
-  gallery.appendChild(fragment);
 }
 
 function resetAndFetchAttractions() {
@@ -327,4 +323,27 @@ function resetAndFetchAttractions() {
       renderGallery(data);
     }
   });
+}
+
+// Infinite Scroll
+function initInfiniteScroll() {
+  const sentinel = document.getElementById("scroll-sentinel");
+
+  const observer = new IntersectionObserver((entries) => {
+    const entry = entries[0];
+
+    if (!entry.isIntersecting) return;
+    if (isLoading) return;
+    if (nextPage === null) {
+      observer.disconnect();
+      return;
+    }
+
+    fetchAttractions().then((data) => {
+      if (data) {
+        renderGallery(data);
+      }
+    });
+  });
+  observer.observe(sentinel);
 }
