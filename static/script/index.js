@@ -9,15 +9,16 @@ let currentCategory = null;
 
 async function initPage() {
   try {
-    initCategorySelector();
-
     const categories = await fetchCategory();
     // console.log("categories", categories);
     renderCategorySelector(categories);
+    initCategorySelector();
+    initSearch();
 
     const mrts = await fetchMrts();
     // console.log("mrts:", mrts);
     renderListBar(mrts);
+    initMrtClick();
 
     const attractions = await fetchAttractions();
     // console.log(attractions);
@@ -72,10 +73,15 @@ function initCategorySelector() {
 
   optionsWrapper.addEventListener("click", (e) => {
     const btn = e.target.closest("button");
+    const searchInput = document.querySelector("#search-input");
+
     if (!btn) return;
 
     optionText.textContent = btn.textContent;
     currentCategory = btn.dataset.value || btn.textContent;
+
+    currentKeyword = null;
+    searchInput.value = "";
 
     selector.classList.remove("is-open");
     resetAndFetchAttractions();
@@ -84,6 +90,30 @@ function initCategorySelector() {
   document.addEventListener("click", (e) => {
     if (!selector.contains(e.target)) {
       selector.classList.remove("is-open");
+    }
+  });
+}
+
+function initSearch() {
+  const searchInput = document.querySelector("#search-input");
+  const searchBtn = document.querySelector("#search-btn");
+  const selectorText = document.querySelector(".selector__text");
+
+  function doSearch() {
+    const keyword = searchInput.value.trim();
+
+    currentKeyword = keyword || null;
+
+    const categoryText = selectorText.textContent.trim();
+    currentCategory = categoryText === "全部分類" ? null : categoryText;
+
+    resetAndFetchAttractions();
+  }
+
+  searchBtn.addEventListener("click", doSearch);
+  searchInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      doSearch();
     }
   });
 }
@@ -174,6 +204,25 @@ function initSwiper() {
   };
 
   update();
+}
+
+function initMrtClick() {
+  const listBar = document.querySelector(".list-bar");
+  const selectorText = document.querySelector(".selector__text");
+  const searchInput = document.querySelector("#search-input");
+
+  listBar.addEventListener("click", (e) => {
+    const btn = e.target.closest(".text-list");
+    if (!btn) return;
+
+    const mrt = btn.textContent.trim();
+    selectorText.textContent = "全部分類";
+    currentCategory = null;
+    currentKeyword = mrt;
+    searchInput.value = mrt;
+
+    resetAndFetchAttractions();
+  });
 }
 
 async function fetchAttractions() {
@@ -270,7 +319,12 @@ function resetAndFetchAttractions() {
   nextPage = 0;
   isLoading = false;
 
+  const gallery = document.querySelector(".gallery");
+  gallery.innerHTML = "";
+
   fetchAttractions().then((data) => {
-    renderGallery(data);
+    if (data) {
+      renderGallery(data);
+    }
   });
 }
