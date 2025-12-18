@@ -6,6 +6,7 @@ let nextPage = 0;
 let isLoading = false;
 let currentKeyword = null;
 let currentCategory = null;
+let infiniteObserver = null;
 
 async function initPage() {
   try {
@@ -44,6 +45,7 @@ function createCategoryItem(category) {
   btn.classList.add("selector__option");
   btn.textContent = category;
   btn.dataset.value = category;
+  btn.dataset.value = category === "全部分類" ? "" : category;
 
   li.appendChild(btn);
   return li;
@@ -54,6 +56,7 @@ function renderCategorySelector(categories) {
   options.innerHTML = "";
 
   const fragment = document.createDocumentFragment();
+  fragment.appendChild(createCategoryItem("全部分類"));
 
   categories.forEach((category) => {
     const option = createCategoryItem(category);
@@ -80,7 +83,7 @@ function initCategorySelector() {
     if (!btn) return;
 
     optionText.textContent = btn.textContent;
-    currentCategory = btn.dataset.value || btn.textContent;
+    currentCategory = btn.dataset.value || null;
 
     currentKeyword = null;
     searchInput.value = "";
@@ -323,21 +326,23 @@ function resetAndFetchAttractions() {
       renderGallery(data);
     }
   });
+  initInfiniteScroll();
 }
 
 // Infinite Scroll
 function initInfiniteScroll() {
   const sentinel = document.getElementById("scroll-sentinel");
 
-  const observer = new IntersectionObserver((entries) => {
+  if (infiniteObserver) {
+    infiniteObserver.disconnect();
+  }
+
+  infiniteObserver = new IntersectionObserver((entries) => {
     const entry = entries[0];
 
     if (!entry.isIntersecting) return;
     if (isLoading) return;
-    if (nextPage === null) {
-      observer.disconnect();
-      return;
-    }
+    if (nextPage === null) return;
 
     fetchAttractions().then((data) => {
       if (data) {
@@ -345,5 +350,5 @@ function initInfiniteScroll() {
       }
     });
   });
-  observer.observe(sentinel);
+  infiniteObserver.observe(sentinel);
 }
