@@ -456,6 +456,11 @@ footer .footer__content {
   background: #eeeeee;
   color: #000000;
 }
+.search-bar .selector__option {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
 .search-bar .selector.is-open .selector__options {
   opacity: 1;
   visibility: visible;

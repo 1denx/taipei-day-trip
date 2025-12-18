@@ -1,30 +1,20 @@
-const selector = document.querySelector(".selector");
-const trigger = selector.querySelector(".selector__trigger");
-const options = selector.querySelectorAll("li");
-
-trigger.addEventListener("click", () => {
-  selector.classList.toggle("is-open");
-});
-
-options.forEach((option) => {
-  option.addEventListener("click", () => {
-    trigger.querySelector("span").textContent = option.textContent;
-    selector.classList.remove("is-open");
-  });
-});
-
-document.addEventListener("click", (e) => {
-  if (!selector.contains(e.target)) {
-    selector.classList.remove("is-open");
-  }
-});
-
 document.addEventListener("DOMContentLoaded", async () => {
   await initPage();
 });
 
+let nextPage = 0;
+let isLoading = false;
+let currentKeyword = null;
+let currentCategory = null;
+
 async function initPage() {
   try {
+    initCategorySelector();
+
+    const categories = await fetchCategory();
+    // console.log("categories", categories);
+    renderCategorySelector(categories);
+
     const mrts = await fetchMrts();
     // console.log("mrts:", mrts);
     renderListBar(mrts);
@@ -33,8 +23,69 @@ async function initPage() {
     // console.log(attractions);
     renderGallery(attractions);
   } catch (err) {
-    console.error("初始化 LIST-BAR 失敗", err);
+    console.error("初始化失敗", err);
   }
+}
+
+async function fetchCategory() {
+  const res = await fetch("/api/categories");
+  const data = await res.json();
+  return data.data;
+}
+
+function createCategoryItem(category) {
+  const li = document.createElement("li");
+  const btn = document.createElement("button");
+
+  btn.type = "button";
+  btn.classList.add("selector__option");
+  btn.textContent = category;
+  btn.dataset.value = category;
+
+  li.appendChild(btn);
+  return li;
+}
+
+function renderCategorySelector(categories) {
+  const options = document.querySelector(".selector__options");
+  options.innerHTML = "";
+
+  const fragment = document.createDocumentFragment();
+
+  categories.forEach((category) => {
+    const option = createCategoryItem(category);
+    fragment.appendChild(option);
+  });
+
+  options.appendChild(fragment);
+}
+
+function initCategorySelector() {
+  const selector = document.querySelector(".selector");
+  const trigger = selector.querySelector(".selector__trigger");
+  const optionText = trigger.querySelector(".selector__text");
+  const optionsWrapper = selector.querySelector(".selector__options");
+
+  trigger.addEventListener("click", () => {
+    selector.classList.toggle("is-open");
+  });
+
+  optionsWrapper.addEventListener("click", (e) => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+
+    optionText.textContent = btn.textContent;
+    currentCategory = btn.dataset.value || btn.textContent;
+
+    selector.classList.remove("is-open");
+    resetAndFetchAttractions();
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!selector.contains(e.target)) {
+      selector.classList.remove("is-open");
+    }
+  });
 }
 
 async function fetchMrts() {
@@ -125,11 +176,6 @@ function initSwiper() {
   update();
 }
 
-let nextPage = 0;
-let isLoading = false;
-let currentKeyword = null;
-let currentCategory = null;
-
 async function fetchAttractions() {
   if (isLoading || nextPage === null) return;
   isLoading = true;
@@ -218,4 +264,13 @@ function renderGallery(attractions) {
   });
 
   gallery.appendChild(fragment);
+}
+
+function resetAndFetchAttractions() {
+  nextPage = 0;
+  isLoading = false;
+
+  fetchAttractions().then((data) => {
+    renderGallery(data);
+  });
 }

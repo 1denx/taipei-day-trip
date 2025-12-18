@@ -71,11 +71,18 @@
     text-align: center;
     cursor: pointer;
     background: $color-white;
+
     &:hover {
       border-radius: 5px;
       background: $secondary-gray-10;
       color: $color-black;
     }
+  }
+
+  .selector__option {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
   }
 
   .selector.is-open .selector__options {
