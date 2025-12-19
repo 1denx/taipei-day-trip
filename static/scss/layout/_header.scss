@@ -1,0 +1,8 @@
+@use "../abstracts/variables" as *;
+
+header {
+  padding: 10px;
+  .header__title {
+    color: $primary-cyan-70;
+  }
+}

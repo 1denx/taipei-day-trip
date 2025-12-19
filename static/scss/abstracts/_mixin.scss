@@ -1,0 +1,32 @@
+@use "variables" as *;
+
+// =======================
+// Breakpoint Mixins
+// =======================
+@mixin mobile {
+  @media (min-width: $breakpoint-mobile-min) and (max-width: $breakpoint-mobile-max) {
+    @content;
+  }
+}
+
+@mixin pad {
+  @media (min-width: $breakpoint-pad-min) and (max-width: $breakpoint-pad-max) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: $breakpoint-desktop-min) and (max-width: $breakpoint-desktop-max) {
+    @content;
+  }
+}
+
+// =======================
+// Typography Mixin
+// =======================
+@mixin text-style($size, $line-height, $weight: $font-weight-regular) {
+  font-family: $font-family-base;
+  font-size: $size;
+  line-height: $line-height;
+  font-weight: $weight;
+}

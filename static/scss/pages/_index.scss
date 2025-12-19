@@ -1,0 +1,31 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixin" as *;
+
+.hero {
+  width: 100%;
+  background-image: url("/static/images/welcome.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 1;
+  padding: 75px 0;
+
+  @include desktop {
+    height: 320px;
+    background-position: top;
+  }
+
+  @include pad {
+    height: 320px;
+    background-position: center;
+  }
+
+  @include mobile {
+    height: 320px;
+    background-position: center top;
+  }
+
+  &__title {
+    color: $color-white;
+  }
+}

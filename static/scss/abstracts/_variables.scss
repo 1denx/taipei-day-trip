@@ -1,0 +1,89 @@
+// =======================
+// Color System
+// =======================
+
+// Primary - Cyan
+$primary-cyan-70: #448899;
+$primary-cyan-50: #66aabb;
+$primary-cyan-20: #aaddee;
+
+// Secondary - Gray
+$secondary-gray-70: #666666;
+$secondary-gray-50: #757575;
+$secondary-gray-20: #e8e8e8;
+$secondary-gray-10: #eeeeee;
+
+// Additional Colors
+$color-light-cyan: #aaddee;
+$color-dark-cyan: #337788;
+$color-blue-gray: #aabbcc;
+$color-white: #ffffff;
+$color-gray-500: #cccccc;
+$color-black: #000000;
+
+// Gradients
+$gradient-light-cyan: linear-gradient(
+  135deg,
+  $primary-cyan-20,
+  $primary-cyan-50
+);
+
+// =======================
+// Typography System
+// =======================
+
+// Font Family
+$font-family-base: "Noto Sans TC", sans-serif;
+
+// Font Weight
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-bold: 700;
+
+// =======================
+// Typography Scale
+// =======================
+
+// Slogan Title
+$text-h1-size: 28px;
+$text-h1-line: 24px;
+
+// Headline
+$text-h2-size: 30px;
+$text-h2-line: 34px;
+
+// Dialog Title
+$text-h3-size: 24px;
+$text-h3-line: 24px;
+
+// Button
+$text-btn-size: 19px;
+$text-btn-line: 16px;
+
+// Content
+$text-content-size: 16px;
+$text-content-line: 1;
+
+// Body
+$text-body-size: 16px;
+$text-body-line: 13.3px;
+
+// Category List
+$text-list-size: 14px;
+$text-list-line: 1;
+
+// =======================
+// RWD System
+// =======================
+
+// Breakpoint
+$gradient-dark-cyan: linear-gradient(0deg, $color-dark-cyan, $primary-cyan-50);
+
+$breakpoint-mobile-min: 361px;
+$breakpoint-mobile-max: 600px;
+
+$breakpoint-pad-min: 601px;
+$breakpoint-pad-max: 1200px;
+
+$breakpoint-desktop-min: 1201px;
+$breakpoint-desktop-max: 1920px;

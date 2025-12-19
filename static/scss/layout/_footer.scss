@@ -1,0 +1,9 @@
+@use "../abstracts/variables" as *;
+
+footer {
+  padding: 45px 0;
+  background-color: $secondary-gray-50;
+  .footer__content {
+    color: $color-white;
+  }
+}
