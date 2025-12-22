@@ -562,6 +562,14 @@ footer .footer__content {
   color: #000000;
 }
 
+.no-results {
+  grid-column: 1/-1;
+  text-align: center;
+  padding: 60px 20px;
+  color: #666666;
+  font-size: 18px;
+}
+
 .flex {
   display: flex;
 }
