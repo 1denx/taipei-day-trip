@@ -1,0 +1,109 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixin" as *;
+
+.decor-line {
+  border-top: 1px solid $secondary-gray-20;
+}
+
+.info-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch;
+  gap: 30px;
+  margin: 40px auto;
+  max-width: 1200px;
+  padding: 0 15px;
+  @include pad {
+    max-width: 90%;
+  }
+
+  @include mobile {
+    flex-direction: column;
+    gap: 20px;
+    padding: 0;
+  }
+}
+
+.info-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: $secondary-gray-70;
+  width: 100%;
+  @include mobile {
+    padding: 0 10px;
+  }
+}
+
+.info-panel__booking-form {
+  background: $secondary-gray-20;
+  padding: 15px 20px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  .field__radio {
+    display: flex;
+    align-items: center;
+    input[type="radio"] {
+      cursor: pointer;
+      width: 18px;
+      height: 18px;
+      position: relative;
+      border: none;
+      &::before {
+        content: "";
+        width: 18px;
+        height: 18px;
+        background-color: $color-white;
+        color: $primary-cyan-70;
+        border-radius: 50%;
+        position: absolute;
+      }
+      &:checked::after {
+        content: "";
+        background-color: $primary-cyan-70;
+        width: 18px;
+        height: 18px;
+        border: 2px solid $color-white;
+        border-radius: 50%;
+        position: absolute;
+      }
+    }
+  }
+  .field__btn {
+    width: 154px;
+    margin-bottom: 25px;
+    @include mobile {
+      margin: 0;
+    }
+  }
+}
+
+.content__wrapper {
+  border-top: 1px solid $secondary-gray-20;
+  color: $secondary-gray-70;
+  margin-bottom: 120px;
+  padding: 10px;
+  @include mobile {
+    margin-bottom: 135px;
+  }
+  .content__description {
+    margin-top: 40px;
+    text-align: justify;
+    @include mobile {
+      margin-top: 50px;
+    }
+  }
+
+  .content__address {
+    margin-top: 20px;
+  }
+
+  .content__transport {
+    text-align: justify;
+    margin-top: 20px;
+  }
+}

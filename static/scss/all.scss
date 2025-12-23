@@ -14,6 +14,7 @@
 @use "components/dialog";
 @use "components/selector";
 @use "components/list-bar";
+@use "components/carousel";
 @use "components/ui-states";
 
 @use "utilities/flex";
@@ -21,3 +22,4 @@
 @use "utilities/text";
 
 @use "pages/index";
+@use "pages/attraction";
