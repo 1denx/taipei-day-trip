@@ -8,6 +8,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  @include mobile {
+    max-width: 100%;
+  }
 }
 
 .carousel__viewport {
@@ -15,9 +18,10 @@
   overflow: hidden;
   border-radius: 5px;
   width: 100%;
-  height: 406px;
+  height: 400px;
   @include mobile {
     height: 350px;
+    border-radius: 0;
   }
 }
 
@@ -58,10 +62,10 @@
     pointer-events: none;
   }
   &--left {
-    left: 16px;
+    left: 0;
   }
   &--right {
-    right: 16px;
+    right: 0;
   }
 }
 
@@ -102,7 +106,7 @@
   }
 }
 
-.carousel-nav__wrapper {
+.carousel-indicators__wrapper {
   position: absolute;
   display: flex;
   justify-content: center;
@@ -113,14 +117,14 @@
   z-index: 3;
 }
 
-.carousel-nav {
+.carousel-indicators {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
 }
 
-.carousel-nav__item {
+.carousel-indicators__item {
   height: 5px;
   background-color: $color-white;
   opacity: 0.6;

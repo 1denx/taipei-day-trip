@@ -297,6 +297,9 @@ async function fetchAttractions() {
 }
 
 function createAttractionCard(attraction) {
+  const cardLink = document.createElement("a");
+  cardLink.href = `/attraction/${attraction.id}`;
+
   const card = document.createElement("article");
   card.classList.add("card");
 
@@ -330,7 +333,8 @@ function createAttractionCard(attraction) {
   details.appendChild(category);
   card.appendChild(cover);
   card.appendChild(details);
-  return card;
+  cardLink.appendChild(card);
+  return cardLink;
 }
 
 function renderGallery(attractions) {

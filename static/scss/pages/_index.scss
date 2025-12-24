@@ -24,6 +24,9 @@
     height: 320px;
     background-position: center top;
   }
+  &__content {
+    padding: 10px;
+  }
 
   &__title {
     color: $color-white;

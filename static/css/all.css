@@ -162,7 +162,7 @@ body {
   max-width: 1200px;
   margin: 0 auto;
 }
-@media (min-width: 601px) and (max-width: 1200px) {
+@media (min-width: 601px) and (max-width: 900px) {
   .container {
     max-width: 90%;
   }
@@ -284,6 +284,7 @@ header .header__title {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
   gap: 30px;
+  padding: 15px;
 }
 
 footer {
@@ -358,7 +359,7 @@ footer .footer__content {
   overflow: hidden;
   aspect-ratio: 330/235;
 }
-@media (min-width: 1201px) and (max-width: 1920px) {
+@media (min-width: 901px) and (max-width: 1920px) {
   .card__cover {
     align-items: 270/197;
   }
@@ -577,17 +578,23 @@ footer .footer__content {
   flex-direction: column;
   align-items: center;
 }
+@media (min-width: 361px) and (max-width: 600px) {
+  .carousel__container {
+    max-width: 100%;
+  }
+}
 
 .carousel__viewport {
   position: relative;
   overflow: hidden;
   border-radius: 5px;
   width: 100%;
-  height: 406px;
+  height: 400px;
 }
 @media (min-width: 361px) and (max-width: 600px) {
   .carousel__viewport {
     height: 350px;
+    border-radius: 0;
   }
 }
 
@@ -628,10 +635,10 @@ footer .footer__content {
   pointer-events: none;
 }
 .carousel-control--left {
-  left: 16px;
+  left: 0;
 }
 .carousel-control--right {
-  right: 16px;
+  right: 0;
 }
 
 .material-symbols-outlined.carousel__expand-icon--left {
@@ -668,7 +675,7 @@ footer .footer__content {
   color: #ffffff;
 }
 
-.carousel-nav__wrapper {
+.carousel-indicators__wrapper {
   position: absolute;
   display: flex;
   justify-content: center;
@@ -679,14 +686,14 @@ footer .footer__content {
   z-index: 3;
 }
 
-.carousel-nav {
+.carousel-indicators {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
 }
 
-.carousel-nav__item {
+.carousel-indicators__item {
   height: 5px;
   background-color: #ffffff;
   opacity: 0.6;
@@ -695,10 +702,10 @@ footer .footer__content {
   flex: 1;
   cursor: pointer;
 }
-.carousel-nav__item:hover {
+.carousel-indicators__item:hover {
   background: #e8e8e8;
 }
-.carousel-nav__item.--active {
+.carousel-indicators__item.--active {
   background-color: #000000;
 }
 
@@ -763,13 +770,13 @@ footer .footer__content {
   opacity: 1;
   padding: 75px 0;
 }
-@media (min-width: 1201px) and (max-width: 1920px) {
+@media (min-width: 901px) and (max-width: 1920px) {
   .hero {
     height: 320px;
     background-position: top;
   }
 }
-@media (min-width: 601px) and (max-width: 1200px) {
+@media (min-width: 601px) and (max-width: 900px) {
   .hero {
     height: 320px;
     background-position: center;
@@ -780,6 +787,9 @@ footer .footer__content {
     height: 320px;
     background-position: center top;
   }
+}
+.hero__content {
+  padding: 10px;
 }
 .hero__title {
   color: #ffffff;
@@ -799,9 +809,9 @@ footer .footer__content {
   max-width: 1200px;
   padding: 0 15px;
 }
-@media (min-width: 601px) and (max-width: 1200px) {
+@media (min-width: 601px) and (max-width: 900px) {
   .info-container {
-    max-width: 90%;
+    gap: 24px;
   }
 }
 @media (min-width: 361px) and (max-width: 600px) {
@@ -826,12 +836,19 @@ footer .footer__content {
 }
 
 .info-panel__booking-form {
+  width: 100%;
+  max-width: 600px;
   background: #e8e8e8;
   padding: 15px 20px;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
   gap: 15px;
+}
+@media (min-width: 361px) and (max-width: 600px) {
+  .info-panel__booking-form {
+    max-width: 100%;
+  }
 }
 .info-panel__booking-form .field__radio {
   display: flex;
