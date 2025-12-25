@@ -39,9 +39,6 @@ body {
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  @include pad {
-    max-width: 90%;
-  }
   @include mobile {
     padding: 10px;
   }
