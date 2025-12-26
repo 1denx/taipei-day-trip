@@ -1,0 +1,128 @@
+@use "../abstracts/mixin" as *;
+@use "../abstracts/variables" as *;
+
+.booking__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 110px;
+  @include mobile {
+    padding: 0 10px;
+  }
+}
+.begin__title {
+  color: $secondary-gray-70;
+  margin: 40px 0 30px 0;
+}
+.booking-info-panel {
+  display: flex;
+  flex-direction: row;
+  gap: 22px;
+  margin-bottom: 40px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid $secondary-gray-20;
+  @include pad {
+    flex-direction: column;
+  }
+  @include mobile {
+    flex-direction: column;
+  }
+  .info-panel__img {
+    width: 25%;
+    margin: 0 auto;
+    object-fit: cover;
+    @include pad {
+      width: 100%;
+    }
+    @include mobile {
+      width: 100%;
+    }
+  }
+  .info-panel__img img {
+    width: 100%;
+    height: 100%;
+  }
+  .info-panel__wrapper {
+    width: 70%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: start;
+    @include pad {
+      width: 100%;
+      flex-direction: row;
+    }
+    @include mobile {
+      width: 100%;
+      flex-direction: column;
+      justify-content: center;
+      align-items: end;
+    }
+    .info-panel__content {
+      width: 100%;
+    }
+    .info-panel__title {
+      margin-bottom: 20px;
+      color: $primary-cyan-70;
+    }
+    .info-panel__text {
+      display: flex;
+      margin-bottom: 10px;
+      color: $secondary-gray-70;
+    }
+    .material-symbols-outlined.del__btn__icon {
+      font-size: 30px;
+      color: $secondary-gray-70;
+    }
+  }
+}
+.contact {
+  padding-bottom: 40px;
+  margin-bottom: 40px;
+  color: $secondary-gray-70;
+  border-bottom: 1px solid $secondary-gray-20;
+  &__title {
+    margin-bottom: 20px;
+  }
+  &-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 15px;
+    color: $secondary-gray-70;
+    input {
+      border: 1px solid $secondary-gray-20;
+      border-radius: 5px;
+      padding: 10px;
+    }
+  }
+}
+.payment {
+  padding-bottom: 40px;
+  margin-bottom: 40px;
+  color: $secondary-gray-70;
+  border-bottom: 1px solid $secondary-gray-20;
+  &__title {
+    margin-bottom: 20px;
+  }
+  &-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    color: $secondary-gray-70;
+    input {
+      border: 1px solid $secondary-gray-20;
+      border-radius: 5px;
+      padding: 10px;
+    }
+  }
+}
+.confirm {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  color: $secondary-gray-70;
+  margin-bottom: 62px;
+  &__text {
+    margin-bottom: 22px;
+  }
+}
