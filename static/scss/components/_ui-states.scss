@@ -1,0 +1,9 @@
+@use "../abstracts/variables" as *;
+
+.no-results {
+  grid-column: 1/-1;
+  text-align: center;
+  padding: 60px 20px;
+  color: $secondary-gray-70;
+  font-size: 18px;
+}

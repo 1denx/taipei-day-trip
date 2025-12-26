@@ -10,20 +10,25 @@ let infiniteObserver = null;
 
 async function initPage() {
   try {
-    const categories = await fetchCategory();
+    const [categories, mrts] = await Promise.all([
+      fetchCategory(),
+      fetchMrts(),
+    ]);
     // console.log("categories", categories);
+    // console.log("mrts:", mrts);
+
     renderCategorySelector(categories);
     initCategorySelector();
     initSearch();
 
-    const mrts = await fetchMrts();
-    // console.log("mrts:", mrts);
     renderListBar(mrts);
     initMrtClick();
 
     const attractions = await fetchAttractions();
     // console.log(attractions);
-    renderGallery(attractions);
+    if (attractions) {
+      renderGallery(attractions);
+    }
 
     initInfiniteScroll();
   } catch (err) {
@@ -32,9 +37,17 @@ async function initPage() {
 }
 
 async function fetchCategory() {
-  const res = await fetch("/api/categories");
-  const data = await res.json();
-  return data.data;
+  try {
+    const res = await fetch("/api/categories");
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}`);
+    }
+    const data = await res.json();
+    return data.data;
+  } catch (err) {
+    console.error("載入分類失敗", err);
+    return [];
+  }
 }
 
 function createCategoryItem(category) {
@@ -44,7 +57,6 @@ function createCategoryItem(category) {
   btn.type = "button";
   btn.classList.add("selector__option");
   btn.textContent = category;
-  btn.dataset.value = category;
   btn.dataset.value = category === "全部分類" ? "" : category;
 
   li.appendChild(btn);
@@ -72,24 +84,19 @@ function initCategorySelector() {
   const optionText = trigger.querySelector(".selector__text");
   const optionsWrapper = selector.querySelector(".selector__options");
 
-  trigger.addEventListener("click", () => {
+  trigger.addEventListener("click", (e) => {
+    e.stopPropagation; // 阻止冒泡，避免觸發 document 的關閉事件
     selector.classList.toggle("is-open");
   });
 
   optionsWrapper.addEventListener("click", (e) => {
     const btn = e.target.closest("button");
-    const searchInput = document.querySelector("#search-input");
-
     if (!btn) return;
 
     optionText.textContent = btn.textContent;
     currentCategory = btn.dataset.value || null;
 
-    currentKeyword = null;
-    searchInput.value = "";
-
     selector.classList.remove("is-open");
-    resetAndFetchAttractions();
   });
 
   document.addEventListener("click", (e) => {
@@ -102,31 +109,39 @@ function initCategorySelector() {
 function initSearch() {
   const searchInput = document.querySelector("#search-input");
   const searchBtn = document.querySelector("#search-btn");
-  const selectorText = document.querySelector(".selector__text");
 
-  function doSearch() {
+  async function doSearch() {
     const keyword = searchInput.value.trim();
-
     currentKeyword = keyword || null;
 
-    const categoryText = selectorText.textContent.trim();
-    currentCategory = categoryText === "全部分類" ? null : categoryText;
-
-    resetAndFetchAttractions();
+    await resetAndFetchAttractions();
   }
 
-  searchBtn.addEventListener("click", doSearch);
-  searchInput.addEventListener("keydown", (e) => {
+  searchBtn.addEventListener("click", async (e) => {
+    e.preventDefault();
+    await doSearch();
+  });
+
+  searchInput.addEventListener("keydown", async (e) => {
     if (e.key === "Enter") {
-      doSearch();
+      e.preventDefault();
+      await doSearch();
     }
   });
 }
 
 async function fetchMrts() {
-  const res = await fetch("/api/mrts");
-  const data = await res.json();
-  return data.data;
+  try {
+    const res = await fetch("/api/mrts");
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}`);
+    }
+    const data = await res.json();
+    return data.data;
+  } catch (err) {
+    console.error("載入捷運站失敗", err);
+    return [];
+  }
 }
 
 function createMrtItem(mrt) {
@@ -144,16 +159,18 @@ function renderListBar(mrts) {
   const listBar = document.querySelector(".list-bar");
 
   if (!listBar) {
-    console.log("找不到 .list-bar");
+    console.warn("找不到 .list-bar");
     return;
   }
 
   listBar.innerHTML = "";
 
+  const fragment = document.createDocumentFragment();
   mrts.forEach((mrt) => {
     const li = createMrtItem(mrt);
-    listBar.appendChild(li);
+    fragment.appendChild(li);
   });
+  listBar.appendChild(fragment);
 
   requestAnimationFrame(() => {
     initSwiper();
@@ -216,7 +233,7 @@ function initMrtClick() {
   const selectorText = document.querySelector(".selector__text");
   const searchInput = document.querySelector("#search-input");
 
-  listBar.addEventListener("click", (e) => {
+  listBar.addEventListener("click", async (e) => {
     const btn = e.target.closest(".text-list");
     if (!btn) return;
 
@@ -226,7 +243,7 @@ function initMrtClick() {
     currentKeyword = mrt;
     searchInput.value = mrt;
 
-    resetAndFetchAttractions();
+    await resetAndFetchAttractions();
   });
 }
 
@@ -249,13 +266,23 @@ async function fetchAttractions() {
     const res = await fetch(`/api/attractions?${params.toString()}`);
 
     if (!res.ok) {
-      throw new Error("API 請求失敗");
+      throw new Error(`HTTP ${res.status}`);
     }
 
     const result = await res.json();
 
     // 確認有抓到資料
-    if (!result || !Array.isArray(result.data)) {
+    if (!result) {
+      throw new Error("API 未回傳資料");
+    }
+
+    if (result.error === true) {
+      nextPage = null;
+      return [];
+    }
+
+    if (!result.hasOwnProperty("data") || !Array.isArray(result.data)) {
+      console.error("API 回傳格式:", result);
       throw new Error("資料格式錯誤");
     }
 
@@ -263,12 +290,16 @@ async function fetchAttractions() {
     return result.data;
   } catch (err) {
     console.error("fetchAttractions error:", err);
+    return null;
   } finally {
     isLoading = false;
   }
 }
 
 function createAttractionCard(attraction) {
+  const cardLink = document.createElement("a");
+  cardLink.href = `/attraction/${attraction.id}`;
+
   const card = document.createElement("article");
   card.classList.add("card");
 
@@ -302,30 +333,44 @@ function createAttractionCard(attraction) {
   details.appendChild(category);
   card.appendChild(cover);
   card.appendChild(details);
-  return card;
+  cardLink.appendChild(card);
+  return cardLink;
 }
 
 function renderGallery(attractions) {
   const gallery = document.querySelector("#attractions-list");
 
+  const fragment = document.createDocumentFragment();
   attractions.forEach((attraction) => {
     const card = createAttractionCard(attraction);
-    gallery.appendChild(card);
+    fragment.appendChild(card);
   });
+  gallery.appendChild(fragment);
 }
 
-function resetAndFetchAttractions() {
+async function resetAndFetchAttractions() {
   nextPage = 0;
   isLoading = false;
 
   const gallery = document.querySelector(".gallery");
   gallery.innerHTML = "";
 
-  fetchAttractions().then((data) => {
-    if (data) {
+  try {
+    const data = await fetchAttractions();
+
+    if (data === null) {
+      return;
+    }
+
+    if (data.length === 0) {
+      showNoResults();
+    } else {
       renderGallery(data);
     }
-  });
+  } catch (err) {
+    console.error("重新載入景點失敗", err);
+  }
+
   initInfiniteScroll();
 }
 
@@ -333,22 +378,45 @@ function resetAndFetchAttractions() {
 function initInfiniteScroll() {
   const sentinel = document.getElementById("scroll-sentinel");
 
+  if (!sentinel) {
+    console.warn("找不到 scroll-sentinel 元素");
+    return;
+  }
+
+  // 清除舊的 observer，避免重複監聽
   if (infiniteObserver) {
     infiniteObserver.disconnect();
   }
 
-  infiniteObserver = new IntersectionObserver((entries) => {
-    const entry = entries[0];
+  infiniteObserver = new IntersectionObserver(
+    async (entries) => {
+      const entry = entries[0];
 
-    if (!entry.isIntersecting) return;
-    if (isLoading) return;
-    if (nextPage === null) return;
+      if (!entry.isIntersecting) return;
+      if (isLoading) return;
+      if (nextPage === null) return;
 
-    fetchAttractions().then((data) => {
-      if (data) {
-        renderGallery(data);
+      try {
+        const data = await fetchAttractions();
+        if (data && data.length > 0) {
+          renderGallery(data);
+        }
+      } catch (err) {
+        console.error("載入下一頁失敗", err);
       }
-    });
-  });
+    },
+    {
+      // 提前觸發：當 sentinel 距離可視範圍還有 100px 時就開始載入
+      rootMargin: "100px",
+    }
+  );
   infiniteObserver.observe(sentinel);
+}
+
+function showNoResults() {
+  const gallery = document.querySelector(".gallery");
+  const message = document.createElement("div");
+  message.classList.add("no-results");
+  message.textContent = "找不到符合條件的景點";
+  gallery.appendChild(message);
 }

@@ -59,6 +59,10 @@
   @include text-style($text-body-size, $text-body-line, $font-weight-medium);
 }
 
+.text-body-regular {
+  @include text-style($text-body-size, $text-body-line, $font-weight-regular);
+}
+
 // List
 .text-list {
   @include text-style($text-list-size, $text-list-line, $font-weight-medium);
