@@ -149,7 +149,7 @@ table {
   --black: #000000;
   --gray-500: #cccccc;
   /* Gradients */
-  --gradient-light-cyan: linear-gradient(135deg, #aaddee, #66aabb);
+  --gradient-light-cyan: linear-gradient(to left, #337788, #66aabb);
   --gradient-dark-cyan: linear-gradient(0deg, #337788, #66aabb);
 }
 
@@ -400,6 +400,74 @@ footer .footer__content {
   border-radius: 5px;
 }
 
+.modal {
+  position: relative;
+  width: 340px;
+  border: none;
+  border-radius: 5px;
+  color: #666666;
+  margin: 80px auto;
+}
+.modal::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background: linear-gradient(to left, #337788, #66aabb);
+}
+.modal::backdrop {
+  background: rgba(0, 0, 0, 0.4);
+}
+.modal[open], .modal::backdrop {
+  animation: show 500ms ease;
+}
+.modal__header {
+  position: relative;
+  text-align: center;
+}
+.modal__header__title {
+  margin: 15px 0;
+}
+.modal__header button {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  color: #666666;
+}
+.modal__header button:hover {
+  color: #000000;
+}
+.modal__form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.modal__form input {
+  padding: 16.5px 15px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+}
+.modal__form button {
+  margin-bottom: 10px;
+}
+.modal__footer {
+  text-align: center;
+}
+.modal__footer button {
+  font-size: 16px;
+  color: #666666;
+}
+.modal__footer button:hover {
+  color: #000000;
+}
+
+@keyframes show {
+  0% {
+    opacity: 0;
+  }
+}
 .search-bar {
   position: relative;
   display: flex;

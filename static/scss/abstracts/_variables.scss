@@ -23,8 +23,8 @@ $color-black: #000000;
 
 // Gradients
 $gradient-light-cyan: linear-gradient(
-  135deg,
-  $primary-cyan-20,
+  to left,
+  $color-dark-cyan,
   $primary-cyan-50
 );
 
