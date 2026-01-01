@@ -1,0 +1,78 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixin" as *;
+
+.modal {
+  position: relative;
+  width: 340px;
+  border: none;
+  border-radius: 5px;
+  color: $secondary-gray-70;
+  margin: 80px auto;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 10px;
+    background: $gradient-light-cyan;
+  }
+
+  &::backdrop {
+    background: rgba(0, 0, 0, 0.4);
+  }
+
+  &[open],
+  &::backdrop {
+    animation: show 500ms ease;
+  }
+
+  &__header {
+    position: relative;
+    text-align: center;
+    &__title {
+      margin: 15px 0;
+    }
+    button {
+      position: absolute;
+      top: -5px;
+      right: -10px;
+      color: $secondary-gray-70;
+      &:hover {
+        color: $color-black;
+      }
+    }
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    input {
+      padding: 16.5px 15px;
+      border: 1px solid $color-gray-500;
+      border-radius: 5px;
+    }
+    button {
+      margin-bottom: 10px;
+    }
+  }
+
+  &__footer {
+    text-align: center;
+    button {
+      font-size: 16px;
+      color: $secondary-gray-70;
+      &:hover {
+        color: $color-black;
+      }
+    }
+  }
+}
+
+@keyframes show {
+  0% {
+    opacity: 0;
+  }
+}

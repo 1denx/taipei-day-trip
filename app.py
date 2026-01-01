@@ -1,11 +1,23 @@
-from fastapi import FastAPI, Depends, Request, Query
+from fastapi import FastAPI, Depends, Request, Query, HTTPException, status
 from fastapi.responses import FileResponse, JSONResponse
 from database.db import get_db_conn
 from typing import Annotated, Optional
 from fastapi.staticfiles import StaticFiles
+from datetime import datetime, timedelta, timezone
+from pydantic import BaseModel, EmailStr
+from dotenv import load_dotenv, find_dotenv
 import json
+import os
+import jwt
+import bcrypt 
 
-app=FastAPI()
+load_dotenv(find_dotenv())
+
+# JWT Config
+SECRET_KEY = os.getenv("SECRET_KEY")
+ALGORITHM = "HS256"
+
+app = FastAPI()
 
 # Static Pages (Never Modify Code in this Block)
 @app.get("/", include_in_schema=False)
@@ -20,6 +32,144 @@ async def booking(request: Request):
 @app.get("/thankyou", include_in_schema=False)
 async def thankyou(request: Request):
 	return FileResponse("./static/thankyou.html", media_type="text/html")
+
+# 使用 Pydantic 資料模型做資料驗證
+class UserSignup(BaseModel):
+	name: str
+	email: EmailStr
+	password: str
+
+class UserSignin(BaseModel):
+	email: EmailStr
+	password: str
+
+def get_user(conn, cursor, email:str):
+	query = "SELECT * FROM users WHERE email = %s"
+	cursor.execute(query,(email,))
+	user = cursor.fetchone()
+	return user
+
+def create_user(conn, cursor, name: str, email: str, password: str):
+	query = "INSERT INTO users (name, email, password) VALUES (%s, %s, %s)"
+	cursor.execute(query,(name, email, password))
+	conn.commit()
+
+# 加密密碼
+def hash_pwd(password: str) -> str:
+	salt = bcrypt.gensalt()
+	hashed = bcrypt.hashpw(password.encode(), salt)
+	return hashed.decode()
+
+# 驗證密碼
+def verify_pwd(plain_pwd: str, hash_pwd: str) -> bool:
+	return bcrypt.checkpw(plain_pwd.encode(), hash_pwd.encode())
+
+def create_access_token(user: dict) -> str:
+	expire = datetime.now(timezone.utc) + timedelta(days=7)
+	payload = {
+		"sub": str(user['id']),
+		"email": user.get("email"),
+		"name": user.get("name"),
+		"exp": expire
+	}
+	token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
+	return token
+
+def verify_token(token: str):
+	try:
+		payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+		return payload
+	except jwt.ExpiredSignatureError:
+		raise HTTPException(status_code=401, detail="Token 已過期")
+	except jwt.InvalidTokenError:
+		raise HTTPException(status_code=401, detail="無效的 Token")
+
+@app.post("/api/user")
+async def signup(user: UserSignup, db=Depends(get_db_conn)):
+	conn, cursor = db
+	try:
+		existing_user = get_user(conn, cursor, user.email)
+		if existing_user:
+			return JSONResponse(
+				status_code=400,
+				content={
+					"error": True,
+					"message": "此 Email 已被註冊"
+				}
+			)
+
+		create_user(conn, cursor, user.name, user.email, hash_pwd(user.password))
+
+		return {"ok": True}
+
+	except Exception as e:
+		print(f"Error: {str(e)}")
+		return JSONResponse(
+			status_code=500,
+			content={
+				"error": True,
+				"message": "伺服器錯誤"
+			}
+		)
+
+@app.put("/api/user/auth")
+async def signin(user: UserSignin, db=Depends(get_db_conn)):
+	conn, cursor = db
+	try:
+		existing_user = get_user(conn, cursor, user.email)
+		if not existing_user or not verify_pwd(user.password, existing_user['password']):
+			return JSONResponse(
+				status_code=400,
+				content={
+					"error": True,
+					"message": "電子郵件或密碼錯誤"
+				}
+			)
+
+		token = create_access_token(existing_user)
+		return {"token": token}
+
+	except Exception as e:
+		print(f"Error: {str(e)}")
+		return JSONResponse(
+			status_code=500,
+			content={
+				"error": True,
+				"message": "伺服器錯誤"
+			}
+		) 
+
+@app.get("/api/user/auth")
+async def get_current_user(request: Request, db=Depends(get_db_conn)):
+	conn, cursor = db
+	try:
+		auth_header = request.headers.get("Authorization")
+		
+		if not auth_header or not auth_header.startswith("Bearer "):
+			return {"data": None}
+
+		token = auth_header.split(" ")[1]
+
+		try:
+			payload = verify_token(token)
+		except HTTPException:
+			return {"data": None}
+		
+		user = get_user(conn, cursor, payload['email'])
+		if not user:
+			return {"data": None}
+
+		return {
+			"data":{
+				"id": user['id'],
+				"name": user['name'],
+				"email": user['email']
+			}
+		}
+
+	except Exception as e:
+		print(f"Error: {str(e)}")
+		return {"data": None}
 
 def get_attractions_list(
 	conn,

@@ -23,8 +23,8 @@ $color-black: #000000;
 
 // Gradients
 $gradient-light-cyan: linear-gradient(
-  135deg,
-  $primary-cyan-20,
+  to left,
+  $color-dark-cyan,
   $primary-cyan-50
 );
 
@@ -56,6 +56,10 @@ $text-h2-line: 34px;
 $text-h3-size: 24px;
 $text-h3-line: 24px;
 
+// Booking Title
+$text-h4-size: 19px;
+$text-h4-line: 16px;
+
 // Button
 $text-btn-size: 19px;
 $text-btn-line: 16px;
@@ -66,7 +70,7 @@ $text-content-line: 1.5;
 
 // Body
 $text-body-size: 16px;
-$text-body-line: 13.3px;
+$text-body-line: 1.5;
 
 // Category List
 $text-list-size: 14px;

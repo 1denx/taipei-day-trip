@@ -7,3 +7,18 @@
   color: $secondary-gray-70;
   font-size: 18px;
 }
+
+.form-message {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.form-message.error {
+  color: #d93025;
+}
+
+.form-message.success {
+  color: #2e7d32;
+}
