@@ -832,6 +832,21 @@ footer .footer__content {
   text-align: center;
 }
 
+.form-message {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.form-message.error {
+  color: #d93025;
+}
+
+.form-message.success {
+  color: #2e7d32;
+}
+
 .hero {
   width: 100%;
   background-image: url("/static/images/welcome.jpg");

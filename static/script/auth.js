@@ -1,15 +1,41 @@
+import { showFormMessage } from "./utils.js";
+
+let authItem;
+let openAuth;
+let logoutItem;
+let logoutBtn;
 const dialog = document.querySelector("#auth-dialog");
-const openAuth = document.querySelector("#open-auth");
 const signinModal = document.querySelector(".signin-modal");
 const signupModal = document.querySelector(".signup-modal");
-const closeBtn = document.querySelector(".close-btn");
+const signinBtn = document.querySelector("#signin-btn");
+const signupBtn = document.querySelector("#signup-btn");
 const signinForm = document.querySelector("#signin-form");
 const signupForm = document.querySelector("#signup-form");
+const signinEmailInput = document.querySelector("#signin-email");
+const signinPwdInput = document.querySelector("#signin-pwd");
+const signupNameInput = document.querySelector("#signup-name");
+const signupEmailInput = document.querySelector("#signup-email");
+const signupPwdInput = document.querySelector("#signup-pwd");
 
-openAuth.addEventListener("click", () => {
-  dialog.showModal();
-  signinModal.hidden = false;
-  signupModal.hidden = true;
+document.addEventListener("DOMContentLoaded", () => {
+  authItem = document.querySelector("#auth-item");
+  logoutItem = document.querySelector("#logout-item");
+
+  openAuth = document.querySelector("#open-auth");
+  logoutBtn = document.querySelector("#logout-btn");
+
+  openAuth.addEventListener("click", () => {
+    resetAuthForms();
+    dialog.showModal();
+    signinModal.hidden = false;
+    signupModal.hidden = true;
+  });
+
+  logoutBtn.addEventListener("click", () => {
+    logout();
+  });
+
+  checkAuthStatus();
 });
 
 dialog.addEventListener("click", (e) => {
@@ -17,11 +43,13 @@ dialog.addEventListener("click", (e) => {
   if (!target) return;
 
   if (target === "signin") {
+    resetAuthForms();
     signinModal.hidden = false;
     signupModal.hidden = true;
   }
 
   if (target === "signup") {
+    resetAuthForms();
     signinModal.hidden = true;
     signupModal.hidden = false;
   }
@@ -32,3 +60,130 @@ dialog.addEventListener("click", (e) => {
     dialog.close();
   }
 });
+
+function getAuthHeader() {
+  const token = localStorage.getItem("token");
+  if (!token) return {};
+  return { Authorization: `Bearer ${token}` };
+}
+
+signupBtn.addEventListener("click", async () => {
+  const name = signupNameInput.value.trim();
+  const email = signupEmailInput.value.trim();
+  const password = signupPwdInput.value.trim();
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!name || !email || !password) {
+    showFormMessage(signupForm, "請輸入完整姓名、信箱與密碼");
+    return;
+  }
+
+  if (!emailRegex.test(email)) {
+    showFormMessage(signupForm, "請輸入正確的 Email");
+    return;
+  }
+
+  if (password.length < 6) {
+    showFormMessage(signupForm, "密碼長度至少 6 碼");
+    return;
+  }
+
+  try {
+    const res = await fetch("/api/user", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name, email, password }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      showFormMessage(signupForm, data.message || "註冊失敗");
+      return;
+    }
+
+    showFormMessage(signupForm, "註冊成功，請登入系統", "success");
+
+    setTimeout(() => {
+      signupModal.hidden = true;
+      signinModal.hidden = false;
+    }, 2000);
+  } catch (err) {
+    showFormMessage(signupForm, "系統錯誤，請稍後再試", "error");
+  }
+});
+
+signinBtn.addEventListener("click", async () => {
+  const email = signinEmailInput.value.trim();
+  const password = signinPwdInput.value.trim();
+
+  if (!email || !password) {
+    showFormMessage(signinForm, "請輸入電子信箱與密碼");
+    return;
+  }
+
+  try {
+    const res = await fetch("/api/user/auth", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      showFormMessage(signinForm, data.message || "信箱或密碼錯誤");
+      return;
+    }
+
+    localStorage.setItem("token", data.token);
+    dialog.close();
+    checkAuthStatus();
+  } catch (err) {
+    showFormMessage(signinForm, "系統錯誤，請稍後再試", "error");
+  }
+});
+
+async function checkAuthStatus() {
+  try {
+    const res = await fetch("/api/user/auth", {
+      headers: { ...getAuthHeader() },
+    });
+
+    const result = await res.json();
+
+    if (result.data === null) {
+      logout();
+      return;
+    }
+
+    updateAuthUI(result.data);
+    console.log("已登入使用者：", result.data);
+  } catch (err) {
+    logout();
+    console.error("檢查登入狀態失敗");
+  }
+}
+
+function updateAuthUI(user) {
+  if (user) {
+    authItem.hidden = true;
+    logoutItem.hidden = false;
+  } else {
+    authItem.hidden = false;
+    logoutItem.hidden = true;
+  }
+}
+
+function logout() {
+  localStorage.removeItem("token");
+  updateAuthUI(null);
+  resetAuthForms();
+}
+
+function resetAuthForms() {
+  signinForm.reset();
+  signupForm.reset();
+}
