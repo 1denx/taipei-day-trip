@@ -1,0 +1,28 @@
+from pydantic import BaseModel, EmailStr
+from typing import Optional, List
+
+# 使用 Pydantic 資料模型做資料驗證
+class UserSignup(BaseModel):
+	name: str
+	email: EmailStr
+	password: str
+
+class UserSignin(BaseModel):
+	email: EmailStr
+	password: str
+
+class Attraction(BaseModel):
+	id: int
+	name: str
+	categories: Optional[str]
+	description: str
+	address: str
+	transport: Optional[str]
+	mrt: Optional[str]
+	lat: Optional[float]
+	lng: Optional[float]
+	images: List[str]
+
+class AttractionResponse(BaseModel):
+	next_page: Optional[int]
+	data: List[Attraction]
