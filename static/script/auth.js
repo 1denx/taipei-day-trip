@@ -192,11 +192,11 @@ async function checkAuthStatus() {
 
 function updateAuthUI(user) {
   if (user) {
-    authItem.hidden = true;
-    logoutItem.hidden = false;
+    authItem.classList.add("btn--nav--hidden");
+    logoutItem.classList.remove("btn--nav--hidden");
   } else {
-    authItem.hidden = false;
-    logoutItem.hidden = true;
+    authItem.classList.remove("btn--nav--hidden");
+    logoutItem.classList.add("btn--nav--hidden");
   }
 }
 

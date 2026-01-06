@@ -337,6 +337,9 @@ footer .footer__content {
   line-height: 1.5;
   font-weight: 500;
 }
+.btn--nav--hidden {
+  display: none;
+}
 .btn--nav:hover {
   color: #000000;
 }
