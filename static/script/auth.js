@@ -1,28 +1,40 @@
 import { showFormMessage } from "./utils.js";
 
 let authItem;
-let openAuth;
 let logoutItem;
-let logoutBtn;
-const dialog = document.querySelector("#auth-dialog");
-const signinModal = document.querySelector(".signin-modal");
-const signupModal = document.querySelector(".signup-modal");
-const signinBtn = document.querySelector("#signin-btn");
-const signupBtn = document.querySelector("#signup-btn");
-const signinForm = document.querySelector("#signin-form");
-const signupForm = document.querySelector("#signup-form");
-const signinEmailInput = document.querySelector("#signin-email");
-const signinPwdInput = document.querySelector("#signin-pwd");
-const signupNameInput = document.querySelector("#signup-name");
-const signupEmailInput = document.querySelector("#signup-email");
-const signupPwdInput = document.querySelector("#signup-pwd");
+let dialog;
+let signinModal;
+let signupModal;
+let signinForm;
+let signupForm;
+let signinEmailInput;
+let signinPwdInput;
+let signupNameInput;
+let signupEmailInput;
+let signupPwdInput;
 
-document.addEventListener("DOMContentLoaded", () => {
+function initAuth() {
   authItem = document.querySelector("#auth-item");
   logoutItem = document.querySelector("#logout-item");
+  dialog = document.querySelector("#auth-dialog");
+  signinModal = document.querySelector(".signin-modal");
+  signupModal = document.querySelector(".signup-modal");
+  signinForm = document.querySelector("#signin-form");
+  signupForm = document.querySelector("#signup-form");
+  signinEmailInput = document.querySelector("#signin-email");
+  signinPwdInput = document.querySelector("#signin-pwd");
+  signupNameInput = document.querySelector("#signup-name");
+  signupEmailInput = document.querySelector("#signup-email");
+  signupPwdInput = document.querySelector("#signup-pwd");
 
-  openAuth = document.querySelector("#open-auth");
-  logoutBtn = document.querySelector("#logout-btn");
+  const openAuth = document.querySelector("#open-auth");
+  const logoutBtn = document.querySelector("#logout-btn");
+  const signinBtn = document.querySelector("#signin-btn");
+  const signupBtn = document.querySelector("#signup-btn");
+
+  if (!openAuth || !logoutBtn || !dialog) {
+    return;
+  }
 
   openAuth.addEventListener("click", () => {
     resetAuthForms();
@@ -35,31 +47,42 @@ document.addEventListener("DOMContentLoaded", () => {
     logout();
   });
 
+  dialog.addEventListener("click", (e) => {
+    const target = e.target.dataset.switch;
+    if (!target) {
+      if (e.target.closest(".close-btn") || e.target === dialog) {
+        dialog.close();
+      }
+      return;
+    }
+
+    if (target === "signin") {
+      resetAuthForms();
+      signinModal.hidden = false;
+      signupModal.hidden = true;
+    }
+
+    if (target === "signup") {
+      resetAuthForms();
+      signinModal.hidden = true;
+      signupModal.hidden = false;
+    }
+  });
+
+  signinBtn.addEventListener("click", handleSignin);
+  signupBtn.addEventListener("click", handleSignup);
+
   checkAuthStatus();
-});
+}
 
-dialog.addEventListener("click", (e) => {
-  const target = e.target.dataset.switch;
-  if (!target) return;
-
-  if (target === "signin") {
-    resetAuthForms();
-    signinModal.hidden = false;
-    signupModal.hidden = true;
-  }
-
-  if (target === "signup") {
-    resetAuthForms();
-    signinModal.hidden = true;
-    signupModal.hidden = false;
-  }
-});
-
-dialog.addEventListener("click", (e) => {
-  if (e.target.closest(".close-btn") || e.target === dialog) {
-    dialog.close();
-  }
-});
+// 等待 header 載入完成後再初始化
+if (document.querySelector("#auth-dialog")) {
+  initAuth();
+} else {
+  document.addEventListener("headerLoaded", () => {
+    initAuth();
+  });
+}
 
 function getAuthHeader() {
   const token = localStorage.getItem("token");
@@ -67,7 +90,7 @@ function getAuthHeader() {
   return { Authorization: `Bearer ${token}` };
 }
 
-signupBtn.addEventListener("click", async () => {
+async function handleSignup() {
   const name = signupNameInput.value.trim();
   const email = signupEmailInput.value.trim();
   const password = signupPwdInput.value.trim();
@@ -113,9 +136,9 @@ signupBtn.addEventListener("click", async () => {
   } catch (err) {
     showFormMessage(signupForm, "系統錯誤，請稍後再試", "error");
   }
-});
+}
 
-signinBtn.addEventListener("click", async () => {
+async function handleSignin() {
   const email = signinEmailInput.value.trim();
   const password = signinPwdInput.value.trim();
 
@@ -144,7 +167,7 @@ signinBtn.addEventListener("click", async () => {
   } catch (err) {
     showFormMessage(signinForm, "系統錯誤，請稍後再試", "error");
   }
-});
+}
 
 async function checkAuthStatus() {
   try {

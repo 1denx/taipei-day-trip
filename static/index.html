@@ -11,22 +11,7 @@
     <title>Index</title>
   </head>
   <body>
-    <header class="container flex-between">
-      <h2 class="header__title text-h2">台北一日遊</h2>
-      <ul class="flex-center">
-        <li><button type="button" class="btn btn--nav">預定行程</button></li>
-        <li id="auth-item">
-          <button type="button" id="open-auth" class="btn btn--nav">
-            登入/註冊
-          </button>
-        </li>
-        <li id="logout-item" hidden>
-          <button type="button" id="logout-btn" class="btn btn--nav">
-            登出系統
-          </button>
-        </li>
-      </ul>
-    </header>
+    <div id="header-container"></div>
     <main>
       <section class="hero">
         <div class="container hero__content">
@@ -90,52 +75,7 @@
       </p>
     </footer>
 
-    <dialog id="auth-dialog" class="modal">
-      <div class="signin-modal">
-        <div class="modal__header">
-          <h3 class="modal__header__title text-h3-bold">登入會員帳號</h3>
-          <button type="button" class="btn close-btn">
-            <span class="material-symbols-outlined"> close </span>
-          </button>
-        </div>
-        <form class="modal__form" id="signin-form">
-          <input type="email" id="signin-email" placeholder="輸入電子信箱" />
-          <input type="password" id="signin-pwd" placeholder="輸入密碼" />
-          <button type="button" id="signin-btn" class="btn btn--primary">
-            登入帳戶
-          </button>
-        </form>
-        <div class="modal__footer">
-          還沒有帳戶？<button type="button" class="btn" data-switch="signup">
-            點此註冊
-          </button>
-        </div>
-      </div>
-      <div class="signup-modal">
-        <div class="modal__header">
-          <h3 class="modal__header__title text-h3-bold">註冊會員帳號</h3>
-          <button type="button" class="btn close-btn">
-            <span class="material-symbols-outlined"> close </span>
-          </button>
-        </div>
-        <form class="modal__form" id="signup-form">
-          <input type="text" id="signup-name" placeholder="輸入姓名" /><input
-            type="email"
-            id="signup-email"
-            placeholder="輸入電子信箱"
-          /><input type="password" id="signup-pwd" placeholder="輸入密碼" />
-          <button type="button" id="signup-btn" class="btn btn--primary">
-            註冊新帳戶
-          </button>
-        </form>
-        <div class="modal__footer">
-          還沒有帳戶？<button type="button" class="btn" data-switch="signin">
-            點此登入
-          </button>
-        </div>
-      </div>
-    </dialog>
-
+    <script src="/static/script/components/header.js"></script>
     <script src="/static/script/index.js" defer></script>
     <script type="module" src="/static/script/auth.js" defer></script>
   </body>
