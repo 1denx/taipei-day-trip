@@ -1,12 +1,13 @@
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
-from app.routes import user, attraction
+from app.routes import user, attraction, booking
 
 app = FastAPI()
 
 app.include_router(user.router)
 app.include_router(attraction.router)
+app.include_router(booking.router)
 
 # Static Pages (Never Modify Code in this Block)
 @app.get("/", include_in_schema=False)

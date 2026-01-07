@@ -1,5 +1,5 @@
 from pydantic import BaseModel, EmailStr
-from typing import Optional, List
+from typing import Optional, List, Literal
 
 # 使用 Pydantic 資料模型做資料驗證
 class UserSignup(BaseModel):
@@ -26,3 +26,9 @@ class Attraction(BaseModel):
 class AttractionResponse(BaseModel):
 	next_page: Optional[int]
 	data: List[Attraction]
+
+class CreateBooking(BaseModel):
+	attractionId: int
+	date: str
+	time: Literal["morning","afternoon"]
+	price: int
