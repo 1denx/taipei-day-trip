@@ -13,6 +13,23 @@ let signupNameInput;
 let signupEmailInput;
 let signupPwdInput;
 
+function openSigninModal() {
+  resetAuthForms();
+  signinModal.hidden = false;
+  signupModal.hidden = true;
+}
+
+function openSignupModal() {
+  resetAuthForms();
+  signinModal.hidden = true;
+  signupModal.hidden = false;
+}
+
+function resetAuthForms() {
+  signinForm.reset();
+  signupForm.reset();
+}
+
 function initAuth() {
   authItem = document.querySelector("#auth-item");
   logoutItem = document.querySelector("#logout-item");
@@ -37,14 +54,12 @@ function initAuth() {
   }
 
   openAuth.addEventListener("click", () => {
-    resetAuthForms();
+    openSigninModal();
     dialog.showModal();
-    signinModal.hidden = false;
-    signupModal.hidden = true;
   });
 
   logoutBtn.addEventListener("click", () => {
-    logout();
+    logout(true);
   });
 
   dialog.addEventListener("click", (e) => {
@@ -57,15 +72,11 @@ function initAuth() {
     }
 
     if (target === "signin") {
-      resetAuthForms();
-      signinModal.hidden = false;
-      signupModal.hidden = true;
+      openSigninModal();
     }
 
     if (target === "signup") {
-      resetAuthForms();
-      signinModal.hidden = true;
-      signupModal.hidden = false;
+      openSignupModal();
     }
   });
 
@@ -84,7 +95,7 @@ if (document.querySelector("#auth-dialog")) {
   });
 }
 
-function getAuthHeader() {
+export function getAuthHeader() {
   const token = localStorage.getItem("token");
   if (!token) return {};
   return { Authorization: `Bearer ${token}` };
@@ -162,6 +173,9 @@ async function handleSignin() {
     }
 
     localStorage.setItem("token", data.token);
+    const loginEvent = new CustomEvent("loginSuccess");
+    document.dispatchEvent(loginEvent);
+
     dialog.close();
     checkAuthStatus();
   } catch (err) {
@@ -178,14 +192,14 @@ async function checkAuthStatus() {
     const result = await res.json();
 
     if (result.data === null) {
-      logout();
+      logout(false);
       return;
     }
 
     updateAuthUI(result.data);
     console.log("已登入使用者：", result.data);
   } catch (err) {
-    logout();
+    logout(false);
     console.error("檢查登入狀態失敗");
   }
 }
@@ -200,13 +214,18 @@ function updateAuthUI(user) {
   }
 }
 
-function logout() {
+export function logout(redirect = false) {
   localStorage.removeItem("token");
   updateAuthUI(null);
   resetAuthForms();
+
+  if (redirect) {
+    window.location.href = "/";
+  }
 }
 
-function resetAuthForms() {
-  signinForm.reset();
-  signupForm.reset();
+export function openAuthDialog() {
+  if (!dialog) return;
+  openSigninModal();
+  dialog.showModal();
 }
