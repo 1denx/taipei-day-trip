@@ -70,7 +70,7 @@
                 </div>
                 <div class="field__item field__date">
                   <label class="field__title text-body-bold">選擇日期：</label>
-                  <input type="date" />
+                  <input type="date" name="date" />
                 </div>
                 <div class="field__item field__radio">
                   <label class="field__title text-body-bold">選擇時間：</label>
@@ -88,7 +88,11 @@
                   </p>
                 </div>
 
-                <button type="button" class="btn btn--primary field__btn">
+                <button
+                  type="button"
+                  id="start-booking-btn"
+                  class="btn btn--primary field__btn"
+                >
                   開始預約行程
                 </button>
               </form>
@@ -130,6 +134,10 @@
       src="/static/script/components/auth.js"
       defer
     ></script>
-    <script src="/static/script/pages/attraction.js" defer></script>
+    <script
+      type="module"
+      src="/static/script/pages/attraction.js"
+      defer
+    ></script>
   </body>
 </html>

@@ -1027,6 +1027,10 @@ footer .footer__content {
   margin: 40px 0 30px 0;
 }
 
+.empty-booking__text {
+  color: #666666;
+}
+
 .booking-info-panel {
   display: flex;
   flex-direction: row;
@@ -1154,6 +1158,10 @@ footer .footer__content {
 }
 .confirm__text {
   margin-bottom: 22px;
+}
+
+.footer--expanded {
+  height: 100vh;
 }
 
 /*# sourceMappingURL=all.css.map */

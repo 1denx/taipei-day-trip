@@ -1,3 +1,5 @@
+import { requireAuth } from "../components/requireAuth.js";
+
 document.addEventListener("DOMContentLoaded", async () => {
   await initAttractionPage();
 });
@@ -52,7 +54,7 @@ function createCarouselItem(imageSrc, alt = "") {
 
   img.onerror = () => {
     console.error(`圖片載入失敗, ${imageSrc}`);
-    img.scr =
+    img.src =
       "https://dummyimage.com/540x406/e8e8e8/757575&text=Image+Load+Failed";
   };
 
@@ -215,4 +217,54 @@ function initBookingPanel() {
         radio.value === "morning" ? "新台幣 2000 元" : "新台幣 2500 元";
     });
   });
+}
+
+const bookingBtn = document.querySelector("#start-booking-btn");
+bookingBtn.addEventListener("click", async () => {
+  if (!bookingBtn) return;
+  await createBooking();
+});
+
+async function createBooking() {
+  try {
+    const isAuthenticated = await requireAuth();
+    if (!isAuthenticated) return;
+
+    const attractionId = window.location.pathname.split("/").pop();
+    const dateInput = document.querySelector('input[name="date"]');
+    const date = dateInput?.value;
+    if (!date) {
+      alert("請選擇日期");
+      return;
+    }
+
+    const timeRadio = document.querySelector('input[name="time"]:checked');
+    const time = timeRadio?.value;
+    if (!time) {
+      alert("請選擇時間");
+      return;
+    }
+
+    const price = time === "morning" ? 2000 : 2500;
+
+    const token = localStorage.getItem("token");
+    const res = await fetch("/api/booking", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ attractionId, date, time, price }),
+    });
+
+    const result = await res.json();
+
+    if (!res.ok || result.ok !== true) {
+      throw new Error(result.message || "建立預定行程失敗");
+    }
+
+    window.location.href = "/booking";
+  } catch (err) {
+    console.error("預訂失敗", err);
+  }
 }

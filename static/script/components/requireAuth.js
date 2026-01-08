@@ -1,5 +1,7 @@
 import { getAuthHeader, logout, openAuthDialog } from "./auth.js";
 
+let currentUser = null;
+
 export async function requireAuth() {
   const token = localStorage.getItem("token");
 
@@ -21,10 +23,15 @@ export async function requireAuth() {
       return false;
     }
 
+    currentUser = result.data;
     return true;
   } catch (err) {
     logout();
     openAuthDialog();
     return false;
   }
+}
+
+export function getCurrentUser() {
+  return currentUser;
 }
