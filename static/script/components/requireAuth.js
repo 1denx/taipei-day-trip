@@ -2,11 +2,11 @@ import { getAuthHeader, logout, openAuthDialog } from "./auth.js";
 
 let currentUser = null;
 
-export async function requireAuth() {
+export async function requireAuth(mode) {
   const token = localStorage.getItem("token");
 
   if (!token) {
-    openAuthDialog();
+    handleUnauthed(mode);
     return false;
   }
 
@@ -19,7 +19,7 @@ export async function requireAuth() {
 
     if (!result.data) {
       logout();
-      openAuthDialog();
+      handleUnauthed(mode);
       return false;
     }
 
@@ -27,11 +27,19 @@ export async function requireAuth() {
     return true;
   } catch (err) {
     logout();
-    openAuthDialog();
+    handleUnauthed(mode);
     return false;
   }
 }
 
 export function getCurrentUser() {
   return currentUser;
+}
+
+function handleUnauthed(mode) {
+  if (mode === "redirect") {
+    window.location.href = "/";
+    return;
+  }
+  openAuthDialog();
 }

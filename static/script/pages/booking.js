@@ -1,7 +1,7 @@
 import { requireAuth, getCurrentUser } from "../components/requireAuth.js";
 
 (async function initBookingPage() {
-  const isAuthenticated = await requireAuth();
+  const isAuthenticated = await requireAuth("redirect");
   if (!isAuthenticated) return;
 
   const user = getCurrentUser();
@@ -9,6 +9,15 @@ import { requireAuth, getCurrentUser } from "../components/requireAuth.js";
   const userName = document.querySelector("#booking-user-name");
   userName.textContent = user?.name || "";
   await initBooking();
+
+  const delBtn = document.querySelector(".del__btn");
+  if (delBtn) {
+    delBtn.addEventListener("click", async () => {
+      const confirmed = confirm("確定要刪除此行程嗎？");
+      if (!confirmed) return;
+      await deleteBooking();
+    });
+  }
 })();
 
 async function initBooking() {
@@ -87,14 +96,6 @@ function renderBooking(data) {
 
   confirmTextEl.textContent = `總價：新台幣 ${price} 元`;
 }
-
-const delBtn = document.querySelector(".del__btn");
-delBtn.addEventListener("click", async () => {
-  const confirmed = confirm("確定要刪除此行程嗎？");
-  if (!confirmed) return;
-
-  await deleteBooking();
-});
 
 async function deleteBooking() {
   try {

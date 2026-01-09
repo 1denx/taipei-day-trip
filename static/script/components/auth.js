@@ -173,8 +173,6 @@ async function handleSignin() {
     }
 
     localStorage.setItem("token", data.token);
-    const loginEvent = new CustomEvent("loginSuccess");
-    document.dispatchEvent(loginEvent);
 
     dialog.close();
     checkAuthStatus();

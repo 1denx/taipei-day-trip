@@ -26,25 +26,14 @@ import { requireAuth } from "./requireAuth.js";
 
       const bookingBtn = document.querySelector("#booking-btn");
 
-      let redirToBooking = false;
-
       if (bookingBtn) {
         bookingBtn.addEventListener("click", async () => {
-          const ok = await requireAuth();
-          if (ok) {
+          const isAuthenticated = await requireAuth("dialog");
+          if (isAuthenticated) {
             window.location.href = "/booking";
-          } else {
-            redirToBooking = true;
           }
         });
       }
-
-      document.addEventListener("loginSuccess", () => {
-        if (redirToBooking) {
-          redirToBooking = false;
-          window.location.href = "/booking";
-        }
-      });
 
       // 觸發自定義事件，通知 header 已載入完成
       const headerEvent = new CustomEvent("headerLoaded");
