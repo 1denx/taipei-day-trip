@@ -13,6 +13,9 @@
   color: $secondary-gray-70;
   margin: 40px 0 30px 0;
 }
+.empty-booking__text {
+  color: $secondary-gray-70;
+}
 .booking-info-panel {
   display: flex;
   flex-direction: row;
@@ -124,5 +127,10 @@
   margin-bottom: 62px;
   &__text {
     margin-bottom: 22px;
+  }
+}
+.footer {
+  &--expanded {
+    height: 100vh;
   }
 }

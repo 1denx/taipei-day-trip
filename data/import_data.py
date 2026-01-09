@@ -1,6 +1,6 @@
 import json
 import os
-from database.db import get_connection
+from app.database.db import get_connection
 
 def image_urls(file_string):
     parts = file_string.split("http")[1:]
@@ -75,3 +75,4 @@ def main():
 if __name__ == "__main__":
     test_image_urls()
     main()
+

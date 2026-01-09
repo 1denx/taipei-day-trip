@@ -6,162 +6,186 @@
     <link rel="stylesheet" href="/static/css/all.css" />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0&icon_names=delete"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0"
     />
     <title>Booking</title>
   </head>
   <body>
-    <header class="container flex-between">
-      <h2 class="header__title text-h2"><a href="/">台北一日遊</a></h2>
-      <ul class="flex-center">
-        <li><button type="button" class="btn btn--nav">預定行程</button></li>
-        <li><button type="button" class="btn btn--nav">登入/註冊</button></li>
-      </ul>
-    </header>
+    <div id="header-container"></div>
     <main>
       <div class="decor-line"></div>
-      <section class="booking__container">
-        <div>
-          <h4 class="begin__title text-h4-bold">
-            您好，Yakko，待預訂的行程如下：
-          </h4>
-        </div>
-        <div class="booking-info-panel">
-          <div class="info-panel__img">
-            <img src="https://picsum.photos/500/400?random=1" alt="" />
-          </div>
-          <div class="info-panel__wrapper">
-            <div class="info-panel__content">
-              <div class="info-panel__title">
-                <p class="text-body-bold">台北一日遊：平安鐘</p>
-              </div>
-              <div class="info-panel__text">
-                <p class="text-body-bold">日期：</p>
-                <p class="text-body-medium">2021-04-23</p>
-              </div>
-              <div class="info-panel__text">
-                <p class="text-body-bold">時間：</p>
-                <p class="text-body-medium">早上 9 點到下午 4 點</p>
-              </div>
-              <div class="info-panel__text">
-                <p class="text-body-bold">費用：</p>
-                <p class="text-body-medium">新台幣 2000 元</p>
-              </div>
-              <div class="info-panel__text">
-                <p class="text-body-bold">地點：</p>
-                <p class="text-body-medium">臺北市 大安區忠孝東路4段</p>
-              </div>
+      <div class="booking__container">
+        <h4 class="begin__title text-h4-bold">
+          您好，<span id="booking-user-name"></span>，待預訂的行程如下：
+        </h4>
+      </div>
+
+      <div id="empty-booking" class="booking__container" hidden>
+        <p class="text-body-medium empty-booking__text mb-40">
+          目前沒有任何待預訂的行程
+        </p>
+      </div>
+
+      <div id="has-booking" class="booking__container">
+        <section>
+          <div class="booking-info-panel">
+            <div class="info-panel__img">
+              <img
+                id="booking__image"
+                src="https://picsum.photos/500/400?random=1"
+                alt=""
+              />
             </div>
-            <button type="button" class="btn del__btn">
-              <span class="material-symbols-outlined del__btn__icon">
-                delete
-              </span>
+            <div class="info-panel__wrapper">
+              <div class="info-panel__content">
+                <div class="info-panel__title">
+                  <p id="booking-title" class="text-body-bold">
+                    台北一日遊：平安鐘
+                  </p>
+                </div>
+                <div class="info-panel__text">
+                  <p class="text-body-bold">日期：</p>
+                  <p id="booking-date" class="text-body-medium">2021-04-23</p>
+                </div>
+                <div class="info-panel__text">
+                  <p class="text-body-bold">時間：</p>
+                  <p id="booking-time" class="text-body-medium">
+                    早上 9 點到下午 4 點
+                  </p>
+                </div>
+                <div class="info-panel__text">
+                  <p class="text-body-bold">費用：</p>
+                  <p id="booking-price" class="text-body-medium">
+                    新台幣 2000 元
+                  </p>
+                </div>
+                <div class="info-panel__text">
+                  <p class="text-body-bold">地點：</p>
+                  <p id="booking-address" class="text-body-medium">
+                    臺北市 大安區忠孝東路4段
+                  </p>
+                </div>
+              </div>
+              <button type="button" class="btn del__btn">
+                <span class="material-symbols-outlined del__btn__icon">
+                  delete
+                </span>
+              </button>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div class="contact">
+            <h4 class="contact__title text-h4-bold">您的聯絡資訊</h4>
+            <form action="" class="contact-form">
+              <div>
+                <label for="booking-name" class="text-body-medium"
+                  >聯絡姓名：</label
+                >
+                <input
+                  type="text"
+                  id="booking-name"
+                  placeholder="請輸入姓名"
+                  required
+                />
+              </div>
+              <div>
+                <label for="booking-email" class="text-body-medium"
+                  >連絡信箱：</label
+                >
+                <input
+                  type="email"
+                  id="booking-email"
+                  placeholder="請輸入信箱"
+                  required
+                />
+              </div>
+              <div>
+                <label for="booking-phone" class="text-body-medium"
+                  >手機號碼：</label
+                >
+                <input type="tel" id="booking-phone" required />
+              </div>
+            </form>
+            <p class="text-body-bold">
+              請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。
+            </p>
+          </div>
+        </section>
+        <section>
+          <div class="payment">
+            <h4 class="payment__title text-h4-bold">信用卡付款資訊</h4>
+            <form action="" class="payment-form">
+              <div>
+                <label for="card-number" class="text-body-medium"
+                  >卡片號碼：</label
+                >
+                <input
+                  type="text"
+                  id="card-number"
+                  name="card-number"
+                  inputmode="numeric"
+                  autocomplete="cc-number"
+                  pattern="[0-9]+"
+                  placeholder="**** **** **** ****"
+                  required
+                />
+              </div>
+              <div>
+                <label for="expiry-date" class="text-body-medium"
+                  >過期時間：</label
+                >
+                <input
+                  type="text"
+                  id="expiry-date"
+                  name="expiry-date"
+                  class="expiry-date"
+                  autocomplete="cc-exp"
+                  minlength="4"
+                  pattern="[0-9/]+"
+                  placeholder="MM/YY"
+                  required
+                />
+              </div>
+              <div>
+                <label for="security-code" class="text-body-medium"
+                  >驗證密碼：</label
+                >
+                <input
+                  type="text"
+                  id="security-code"
+                  name="security-code"
+                  inputmode="numeric"
+                  minlength="3"
+                  maxlength="4"
+                  pattern="[0-9]+"
+                  placeholder="CVV"
+                  required
+                />
+              </div>
+            </form>
+          </div>
+          <div class="confirm">
+            <p class="confirm__text text-body-bold">總價：新台幣 2000 元</p>
+            <button type="button" class="btn btn--primary">
+              確認訂購並付款
             </button>
           </div>
-        </div>
-      </section>
-      <section class="booking__container">
-        <div class="contact">
-          <h4 class="contact__title text-h4-bold">您的聯絡資訊</h4>
-          <form action="" class="contact-form">
-            <div>
-              <label for="booking-name" class="text-body-medium"
-                >聯絡姓名：</label
-              >
-              <input
-                type="text"
-                id="booking-name"
-                placeholder="Yakko"
-                required
-              />
-            </div>
-            <div>
-              <label for="booking-email" class="text-body-medium"
-                >連絡信箱：</label
-              >
-              <input
-                type="email"
-                id="booking-email"
-                placeholder="wehelp@pada-x.com"
-                required
-              />
-            </div>
-            <div>
-              <label for="booking-phone" class="text-body-medium"
-                >手機號碼：</label
-              >
-              <input type="tel" id="booking-phone" required />
-            </div>
-          </form>
-          <p class="text-body-bold">
-            請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。
-          </p>
-        </div>
-      </section>
-      <section class="booking__container">
-        <div class="payment">
-          <h4 class="payment__title text-h4-bold">信用卡付款資訊</h4>
-          <form action="" class="payment-form">
-            <div>
-              <label for="card-number" class="text-body-medium"
-                >卡片號碼：</label
-              >
-              <input
-                type="text"
-                id="card-number"
-                name="card-number"
-                inputmode="numeric"
-                autocomplete="cc-number"
-                pattern="[0-9]+"
-                placeholder="**** **** **** ****"
-                required
-              />
-            </div>
-            <div>
-              <label for="expiry-date" class="text-body-medium"
-                >過期時間：</label
-              >
-              <input
-                type="text"
-                id="expiry-date"
-                name="expiry-date"
-                class="expiry-date"
-                autocomplete="cc-exp"
-                minlength="4"
-                pattern="[0-9/]+"
-                placeholder="MM/YY"
-                required
-              />
-            </div>
-            <div>
-              <label for="security-code" class="text-body-medium"
-                >驗證密碼：</label
-              >
-              <input
-                type="text"
-                id="security-code"
-                name="security-code"
-                inputmode="numeric"
-                minlength="3"
-                maxlength="4"
-                pattern="[0-9]+"
-                placeholder="CVV"
-                required
-              />
-            </div>
-          </form>
-        </div>
-        <div class="confirm">
-          <p class="confirm__text text-body-bold">總價：新台幣 2000 元</p>
-          <button type="button" class="btn btn--primary">確認訂購並付款</button>
-        </div>
-      </section>
+        </section>
+      </div>
     </main>
-    <footer id="scroll-sentinel">
+    <footer id="scroll-sentinel" class="footer">
       <p class="footer__content text-body-bold text-center">
         COPYRIGHT © 2021 台北一日遊
       </p>
     </footer>
-    <script src="/static/script/booking.js" defer></script>
+
+    <script type="module" src="/static/script/components/header.js"></script>
+    <script
+      type="module"
+      src="/static/script/components/auth.js"
+      defer
+    ></script>
+    <script type="module" src="/static/script/pages/booking.js" defer></script>
   </body>
 </html>

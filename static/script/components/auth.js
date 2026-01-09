@@ -1,73 +1,107 @@
 import { showFormMessage } from "./utils.js";
 
 let authItem;
-let openAuth;
 let logoutItem;
-let logoutBtn;
-const dialog = document.querySelector("#auth-dialog");
-const signinModal = document.querySelector(".signin-modal");
-const signupModal = document.querySelector(".signup-modal");
-const signinBtn = document.querySelector("#signin-btn");
-const signupBtn = document.querySelector("#signup-btn");
-const signinForm = document.querySelector("#signin-form");
-const signupForm = document.querySelector("#signup-form");
-const signinEmailInput = document.querySelector("#signin-email");
-const signinPwdInput = document.querySelector("#signin-pwd");
-const signupNameInput = document.querySelector("#signup-name");
-const signupEmailInput = document.querySelector("#signup-email");
-const signupPwdInput = document.querySelector("#signup-pwd");
+let dialog;
+let signinModal;
+let signupModal;
+let signinForm;
+let signupForm;
+let signinEmailInput;
+let signinPwdInput;
+let signupNameInput;
+let signupEmailInput;
+let signupPwdInput;
 
-document.addEventListener("DOMContentLoaded", () => {
+function openSigninModal() {
+  resetAuthForms();
+  signinModal.hidden = false;
+  signupModal.hidden = true;
+}
+
+function openSignupModal() {
+  resetAuthForms();
+  signinModal.hidden = true;
+  signupModal.hidden = false;
+}
+
+function resetAuthForms() {
+  signinForm.reset();
+  signupForm.reset();
+}
+
+function initAuth() {
   authItem = document.querySelector("#auth-item");
   logoutItem = document.querySelector("#logout-item");
+  dialog = document.querySelector("#auth-dialog");
+  signinModal = document.querySelector(".signin-modal");
+  signupModal = document.querySelector(".signup-modal");
+  signinForm = document.querySelector("#signin-form");
+  signupForm = document.querySelector("#signup-form");
+  signinEmailInput = document.querySelector("#signin-email");
+  signinPwdInput = document.querySelector("#signin-pwd");
+  signupNameInput = document.querySelector("#signup-name");
+  signupEmailInput = document.querySelector("#signup-email");
+  signupPwdInput = document.querySelector("#signup-pwd");
 
-  openAuth = document.querySelector("#open-auth");
-  logoutBtn = document.querySelector("#logout-btn");
+  const openAuth = document.querySelector("#open-auth");
+  const logoutBtn = document.querySelector("#logout-btn");
+  const signinBtn = document.querySelector("#signin-btn");
+  const signupBtn = document.querySelector("#signup-btn");
+
+  if (!openAuth || !logoutBtn || !dialog) {
+    return;
+  }
 
   openAuth.addEventListener("click", () => {
-    resetAuthForms();
+    openSigninModal();
     dialog.showModal();
-    signinModal.hidden = false;
-    signupModal.hidden = true;
   });
 
   logoutBtn.addEventListener("click", () => {
-    logout();
+    logout(true);
   });
 
+  dialog.addEventListener("click", (e) => {
+    const target = e.target.dataset.switch;
+    if (!target) {
+      if (e.target.closest(".close-btn") || e.target === dialog) {
+        dialog.close();
+      }
+      return;
+    }
+
+    if (target === "signin") {
+      openSigninModal();
+    }
+
+    if (target === "signup") {
+      openSignupModal();
+    }
+  });
+
+  signinBtn.addEventListener("click", handleSignin);
+  signupBtn.addEventListener("click", handleSignup);
+
   checkAuthStatus();
-});
+}
 
-dialog.addEventListener("click", (e) => {
-  const target = e.target.dataset.switch;
-  if (!target) return;
+// 等待 header 載入完成後再初始化
+if (document.querySelector("#auth-dialog")) {
+  initAuth();
+} else {
+  document.addEventListener("headerLoaded", () => {
+    initAuth();
+  });
+}
 
-  if (target === "signin") {
-    resetAuthForms();
-    signinModal.hidden = false;
-    signupModal.hidden = true;
-  }
-
-  if (target === "signup") {
-    resetAuthForms();
-    signinModal.hidden = true;
-    signupModal.hidden = false;
-  }
-});
-
-dialog.addEventListener("click", (e) => {
-  if (e.target.closest(".close-btn") || e.target === dialog) {
-    dialog.close();
-  }
-});
-
-function getAuthHeader() {
+export function getAuthHeader() {
   const token = localStorage.getItem("token");
   if (!token) return {};
   return { Authorization: `Bearer ${token}` };
 }
 
-signupBtn.addEventListener("click", async () => {
+async function handleSignup() {
   const name = signupNameInput.value.trim();
   const email = signupEmailInput.value.trim();
   const password = signupPwdInput.value.trim();
@@ -113,9 +147,9 @@ signupBtn.addEventListener("click", async () => {
   } catch (err) {
     showFormMessage(signupForm, "系統錯誤，請稍後再試", "error");
   }
-});
+}
 
-signinBtn.addEventListener("click", async () => {
+async function handleSignin() {
   const email = signinEmailInput.value.trim();
   const password = signinPwdInput.value.trim();
 
@@ -139,12 +173,13 @@ signinBtn.addEventListener("click", async () => {
     }
 
     localStorage.setItem("token", data.token);
+
     dialog.close();
     checkAuthStatus();
   } catch (err) {
     showFormMessage(signinForm, "系統錯誤，請稍後再試", "error");
   }
-});
+}
 
 async function checkAuthStatus() {
   try {
@@ -155,35 +190,40 @@ async function checkAuthStatus() {
     const result = await res.json();
 
     if (result.data === null) {
-      logout();
+      logout(false);
       return;
     }
 
     updateAuthUI(result.data);
     console.log("已登入使用者：", result.data);
   } catch (err) {
-    logout();
+    logout(false);
     console.error("檢查登入狀態失敗");
   }
 }
 
 function updateAuthUI(user) {
   if (user) {
-    authItem.hidden = true;
-    logoutItem.hidden = false;
+    authItem.classList.add("btn--nav--hidden");
+    logoutItem.classList.remove("btn--nav--hidden");
   } else {
-    authItem.hidden = false;
-    logoutItem.hidden = true;
+    authItem.classList.remove("btn--nav--hidden");
+    logoutItem.classList.add("btn--nav--hidden");
   }
 }
 
-function logout() {
+export function logout(redirect = false) {
   localStorage.removeItem("token");
   updateAuthUI(null);
   resetAuthForms();
+
+  if (redirect) {
+    window.location.href = "/";
+  }
 }
 
-function resetAuthForms() {
-  signinForm.reset();
-  signupForm.reset();
+export function openAuthDialog() {
+  if (!dialog) return;
+  openSigninModal();
+  dialog.showModal();
 }

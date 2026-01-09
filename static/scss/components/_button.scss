@@ -40,6 +40,10 @@
 
     @include text-style($text-body-size, $text-body-line, $font-weight-medium);
 
+    &--hidden {
+      display: none;
+    }
+
     &:hover {
       color: $color-black;
     }
