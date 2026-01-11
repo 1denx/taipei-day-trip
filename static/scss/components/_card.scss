@@ -13,23 +13,44 @@
     transition: transform 0.5 ease;
   }
 
+  /* Skeleton loading */
+  &__skeleton {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: card-loading 1.5s infinite;
+    z-index: 1;
+  }
+
   &__cover {
     position: relative;
     width: 100%;
     overflow: hidden;
     aspect-ratio: 330 / 235;
     @include desktop {
-      align-items: 270 / 197;
+      aspect-ratio: 270 / 197;
     }
   }
+
   &__image {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
-
     filter: contrast(70%);
-    transition: filter 0.5s cubic-bezier(0.43, 0.41, 0.22, 0.91);
+
+    // loading 狀態
+    opacity: 0;
+    transition: filter 0.3s ease-in-out, cubic-bezier(0.43, 0.41, 0.22, 0.91);
+
+    &.loaded {
+      opacity: 1;
+    }
+
     &:hover {
       filter: contrast(100%);
     }
@@ -56,5 +77,14 @@
     color: $secondary-gray-50;
     border: 1px solid $secondary-gray-20;
     border-radius: 5px;
+  }
+}
+
+@keyframes card-loading {
+  0% {
+    background-position: 50% 0;
+  }
+  100% {
+    background-position: -150% 0;
   }
 }
