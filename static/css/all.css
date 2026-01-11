@@ -663,7 +663,7 @@ footer .footer__content {
   overflow: hidden;
   border-radius: 5px;
   width: 100%;
-  height: 400px;
+  flex: 1;
 }
 @media (min-width: 361px) and (max-width: 600px) {
   .carousel__viewport {
@@ -678,7 +678,7 @@ footer .footer__content {
   list-style: none;
   padding: 0;
   margin: 0;
-  height: 100%;
+  height: 430px;
 }
 .carousel__track li {
   flex-shrink: 0;
@@ -779,7 +779,7 @@ footer .footer__content {
 .carousel-indicators__item:hover {
   background: #e8e8e8;
 }
-.carousel-indicators__item.--active {
+.carousel-indicators__item--active {
   background-color: #000000;
 }
 
@@ -924,6 +924,16 @@ footer .footer__content {
     padding: 0 10px;
   }
 }
+.info-panel--skeleton {
+  width: 100%;
+}
+.info-panel__title--skeleton {
+  width: 300px;
+  height: 33px;
+}
+.info-panel__text--skeleton {
+  width: 200px;
+}
 
 .info-panel__booking-form {
   width: 100%;
@@ -934,6 +944,9 @@ footer .footer__content {
   display: flex;
   flex-direction: column;
   gap: 15px;
+}
+.info-panel__booking-form--skeleton {
+  height: 302px;
 }
 @media (min-width: 361px) and (max-width: 600px) {
   .info-panel__booking-form {
@@ -1010,7 +1023,35 @@ footer .footer__content {
   text-align: justify;
   margin-top: 20px;
 }
+.content__wrapper .content__box--skeleton {
+  margin-top: 40px;
+}
+@media (min-width: 361px) and (max-width: 600px) {
+  .content__wrapper .content__box--skeleton {
+    margin-top: 50px;
+  }
+}
+.content__wrapper .content__text--skeleton {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+}
 
+/* Skeleton Loading */
+.loading {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 50% 0;
+  }
+  100% {
+    background-position: -150% 0;
+  }
+}
 .booking__container {
   max-width: 1200px;
   margin: 0 auto;
