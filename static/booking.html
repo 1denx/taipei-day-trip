@@ -39,31 +39,23 @@
             <div class="info-panel__wrapper">
               <div class="info-panel__content">
                 <div class="info-panel__title">
-                  <p id="booking-title" class="text-body-bold">
-                    台北一日遊：平安鐘
-                  </p>
+                  <p id="booking-title" class="text-body-bold">&nbsp;</p>
                 </div>
                 <div class="info-panel__text">
                   <p class="text-body-bold">日期：</p>
-                  <p id="booking-date" class="text-body-medium">2021-04-23</p>
+                  <p id="booking-date" class="text-body-medium">&nbsp;</p>
                 </div>
                 <div class="info-panel__text">
                   <p class="text-body-bold">時間：</p>
-                  <p id="booking-time" class="text-body-medium">
-                    早上 9 點到下午 4 點
-                  </p>
+                  <p id="booking-time" class="text-body-medium">&nbsp;</p>
                 </div>
                 <div class="info-panel__text">
                   <p class="text-body-bold">費用：</p>
-                  <p id="booking-price" class="text-body-medium">
-                    新台幣 2000 元
-                  </p>
+                  <p id="booking-price" class="text-body-medium">&nbsp;</p>
                 </div>
                 <div class="info-panel__text">
                   <p class="text-body-bold">地點：</p>
-                  <p id="booking-address" class="text-body-medium">
-                    臺北市 大安區忠孝東路4段
-                  </p>
+                  <p id="booking-address" class="text-body-medium">&nbsp;</p>
                 </div>
               </div>
               <button type="button" class="btn del__btn">
@@ -77,7 +69,7 @@
         <section>
           <div class="contact">
             <h4 class="contact__title text-h4-bold">您的聯絡資訊</h4>
-            <form action="" class="contact-form">
+            <form class="contact-form">
               <div>
                 <label for="booking-name" class="text-body-medium"
                   >聯絡姓名：</label
@@ -115,59 +107,30 @@
         <section>
           <div class="payment">
             <h4 class="payment__title text-h4-bold">信用卡付款資訊</h4>
-            <form action="" class="payment-form">
-              <div>
+            <form class="payment-form">
+              <div class="form-field">
                 <label for="card-number" class="text-body-medium"
                   >卡片號碼：</label
                 >
-                <input
-                  type="text"
-                  id="card-number"
-                  name="card-number"
-                  inputmode="numeric"
-                  autocomplete="cc-number"
-                  pattern="[0-9]+"
-                  placeholder="**** **** **** ****"
-                  required
-                />
+                <div class="tpfield" id="card-number"></div>
               </div>
-              <div>
-                <label for="expiry-date" class="text-body-medium"
+              <div class="form-field">
+                <label for="card-expiration-date" class="text-body-medium"
                   >過期時間：</label
                 >
-                <input
-                  type="text"
-                  id="expiry-date"
-                  name="expiry-date"
-                  class="expiry-date"
-                  autocomplete="cc-exp"
-                  minlength="4"
-                  pattern="[0-9/]+"
-                  placeholder="MM/YY"
-                  required
-                />
+                <div class="tpfield" id="card-expiration-date"></div>
               </div>
-              <div>
-                <label for="security-code" class="text-body-medium"
+              <div class="form-field">
+                <label for="card-ccv" class="text-body-medium"
                   >驗證密碼：</label
                 >
-                <input
-                  type="text"
-                  id="security-code"
-                  name="security-code"
-                  inputmode="numeric"
-                  minlength="3"
-                  maxlength="4"
-                  pattern="[0-9]+"
-                  placeholder="CVV"
-                  required
-                />
+                <div class="tpfield" id="card-ccv"></div>
               </div>
             </form>
           </div>
           <div class="confirm">
-            <p class="confirm__text text-body-bold">總價：新台幣 2000 元</p>
-            <button type="button" class="btn btn--primary">
+            <p class="confirm__text text-body-bold">&nbsp;</p>
+            <button type="button" class="btn btn--primary" id="confirm-btn">
               確認訂購並付款
             </button>
           </div>
@@ -180,6 +143,7 @@
       </p>
     </footer>
 
+    <script src="https://js.tappaysdk.com/sdk/tpdirect/v5.14.0"></script>
     <script type="module" src="/static/script/components/header.js"></script>
     <script
       type="module"

@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap");
 html,
 body,
@@ -824,14 +825,88 @@ footer .footer__content {
   text-align: center;
 }
 
-.form-message.error {
+.input-message {
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 12px;
+}
+
+.form-message.error,
+.input-message.error {
   color: #d93025;
 }
 
-.form-message.success {
+.form-message.success,
+.input-message.success {
   color: #2e7d32;
 }
 
+/* 通用 input 欄位的錯誤/成功樣式 */
+input.error {
+  border: 1px solid #d93025;
+}
+
+input.success {
+  border: 1px solid #2e7d32;
+}
+
+/* TapPay 欄位 */
+.form-field {
+  display: flex;
+  align-items: center;
+}
+
+.tpfield {
+  width: 200px;
+  height: 38px;
+  border: 1px solid #e8e8e8;
+  border-radius: 5px;
+  padding: 10px;
+  transition: all 0.2s ease-in-out;
+}
+
+/* TapPay 欄位的錯誤/成功樣式 */
+.field-error .tpfield {
+  border: 1px solid #d93025;
+  box-shadow: 0 0 0 0.2rem rgba(217, 48, 37, 0.25);
+}
+
+.field-success .tpfield {
+  border: 1px solid #2e7d32;
+  box-shadow: 0 0 0 0.2rem rgba(46, 125, 50, 0.25);
+}
+
+.tappay-field-focus {
+  border-color: #66afe9;
+  outline: 0;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+.field-error .tappay-field-focus {
+  border-color: #d93025;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(217, 48, 37, 0.3);
+}
+
+.field-success .tappay-field-focus {
+  border-color: #2e7d32;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(46, 125, 50, 0.3);
+}
+
+/* Skeleton Loading */
+.loading {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 50% 0;
+  }
+  100% {
+    background-position: -150% 0;
+  }
+}
 .flex {
   display: flex;
 }
@@ -1175,6 +1250,8 @@ footer .footer__content {
   color: #666666;
 }
 .contact-form input {
+  width: 200px;
+  height: 38px;
   border: 1px solid #e8e8e8;
   border-radius: 5px;
   padding: 10px;
@@ -1194,11 +1271,6 @@ footer .footer__content {
   flex-direction: column;
   gap: 15px;
   color: #666666;
-}
-.payment-form input {
-  border: 1px solid #e8e8e8;
-  border-radius: 5px;
-  padding: 10px;
 }
 
 .confirm {

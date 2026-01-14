@@ -93,6 +93,8 @@
     margin-bottom: 15px;
     color: $secondary-gray-70;
     input {
+      width: 200px;
+      height: 38px;
       border: 1px solid $secondary-gray-20;
       border-radius: 5px;
       padding: 10px;
@@ -112,11 +114,6 @@
     flex-direction: column;
     gap: 15px;
     color: $secondary-gray-70;
-    input {
-      border: 1px solid $secondary-gray-20;
-      border-radius: 5px;
-      padding: 10px;
-    }
   }
 }
 .confirm {

@@ -15,10 +15,72 @@
   text-align: center;
 }
 
-.form-message.error {
-  color: #d93025;
+.input-message {
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 12px;
 }
 
-.form-message.success {
-  color: #2e7d32;
+.form-message.error,
+.input-message.error {
+  color: $color-error;
+}
+
+.form-message.success,
+.input-message.success {
+  color: $color-success;
+}
+
+/* 通用 input 欄位的錯誤/成功樣式 */
+input.error {
+  border: 1px solid $color-error;
+}
+
+input.success {
+  border: 1px solid $color-success;
+}
+
+/* TapPay 欄位 */
+.form-field {
+  display: flex;
+  align-items: center;
+}
+
+.tpfield {
+  width: 200px;
+  height: 38px;
+  border: 1px solid $secondary-gray-20;
+  border-radius: 5px;
+  padding: 10px;
+  transition: all 0.2s ease-in-out;
+}
+
+/* TapPay 欄位的錯誤/成功樣式 */
+.field-error .tpfield {
+  border: 1px solid $color-error;
+  box-shadow: 0 0 0 0.2rem rgba($color-error, 0.25);
+}
+
+.field-success .tpfield {
+  border: 1px solid $color-success;
+  box-shadow: 0 0 0 0.2rem rgba($color-success, 0.25);
+}
+
+.tappay-field-focus {
+  border-color: #66afe9;
+  outline: 0;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+    0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+.field-error .tappay-field-focus {
+  border-color: $color-error;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+    0 0 8px rgba($color-error, 0.3);
+}
+
+.field-success .tappay-field-focus {
+  border-color: $color-success;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+    0 0 8px rgba($color-success, 0.3);
 }
