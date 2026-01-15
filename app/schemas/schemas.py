@@ -32,3 +32,29 @@ class CreateBooking(BaseModel):
 	date: str
 	time: Literal["morning","afternoon"]
 	price: int
+
+# order
+class Contact(BaseModel):
+	name: str
+	email: EmailStr
+	phone: str
+
+class TripAttraction(BaseModel):
+	id: int
+	name: str
+	address: str
+	image: str
+
+class Trip(BaseModel):
+	attraction: TripAttraction
+	date: str
+	time: Literal["morning","afternoon"]
+
+class OrderData(BaseModel):
+	price: int
+	trip: Trip
+	contact: Contact
+
+class CreateOrder(BaseModel):
+	prime: str
+	order: OrderData
