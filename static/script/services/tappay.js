@@ -13,9 +13,6 @@ const cardNumInput = document.querySelector("#card-number");
 const cardExpiryInput = document.querySelector("#card-expiration-date");
 const cardCCVInput = document.querySelector("#card-ccv");
 
-let canGetPrime = false;
-let currentCardType = "unknown";
-
 export function initTapPay() {
   try {
     TPDirect.setupSDK(config.APP_ID, config.APP_KEY, "sandbox");
@@ -70,11 +67,6 @@ export function initTapPay() {
     // 監聽卡片輸入狀態
     TPDirect.card.onUpdate((update) => {
       console.log("TapPay onUpdate", update);
-      // 更新卡片類型
-      currentCardType = update.cardType;
-
-      // 更新 canGetPrime 狀態
-      canGetPrime = update.canGetPrime;
 
       if (update.status.number === 0) {
         setInputSuccess(cardNumInput);
@@ -193,12 +185,4 @@ export async function getPrime() {
       resolve(result.card.prime);
     });
   });
-}
-
-export function checkCanGetPrime() {
-  return canGetPrime;
-}
-
-export function getCurrentCardType() {
-  return currentCardType;
 }

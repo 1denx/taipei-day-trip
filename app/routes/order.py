@@ -44,9 +44,13 @@ async def create_order(
                 order.order.price,
                 order.order.contact
             )
+            print(f"TapPay 結果: {tappay_result}")
     
         except requests.exceptions.RequestException as e:
             print(f"TapPay API Error: {e}")
+            # 更新訂單狀態為付款失敗
+            mark_order_paid(conn, cursor, order_number, status=1, message="金流服務異常")
+
             raise HTTPException(
                 status_code=500,
                 detail={
@@ -57,13 +61,16 @@ async def create_order(
 
         # 根據付款結果更新訂單狀態
         if tappay_result["status"] == 0:
-            mark_order_paid(conn, cursor, order_number, status=0)
+            mark_order_paid(conn, cursor, order_number, status=0, message="付款成功")
             payment_status = 0
             payment_message = "付款成功"
         else:
-            mark_order_paid(conn, cursor, order_number, status=1)
+            tappay_message = tappay_result.get("msg", "付款失敗")
+            mark_order_paid(conn, cursor, order_number, status=1, message=tappay_message)
             payment_status = 1
-            payment_message = "付款失敗"
+            payment_message = tappay_message
+        
+        conn.commit()
 
         return {
             "data": {
@@ -101,7 +108,7 @@ async def create_order(
 @router.get("/api/order/{orderNumber}")
 async def get_order(
     request: Request,
-    order_number: str,
+    orderNumber: str,
     db=Depends(get_db_conn)
 ):
     conn, cursor = db
@@ -117,7 +124,7 @@ async def get_order(
         )
     
     try:
-        order = get_order_by_number(conn, cursor, user["id"], order_number)
+        order = get_order_by_number(conn, cursor, user["id"], orderNumber)
 
         if not order:
             return {"data": None}

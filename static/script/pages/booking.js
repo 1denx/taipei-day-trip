@@ -1,5 +1,5 @@
 import { requireAuth, getCurrentUser } from "../components/requireAuth.js";
-import { initTapPay, getPrime, checkCanGetPrime } from "../services/tappay.js";
+import { initTapPay, getPrime } from "../services/tappay.js";
 import {
   isValidName,
   isValidEmail,

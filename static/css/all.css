@@ -317,6 +317,17 @@ footer .footer__content {
 .btn--primary:hover {
   background-color: #66aabb;
 }
+.btn--primary--outline {
+  background: rgba(255, 255, 255, 0.5);
+  color: #448899;
+  border: 1px solid #448899;
+  padding: 10px 20px;
+  font-size: 19px;
+}
+.btn--primary--outline:hover {
+  background-color: #448899;
+  color: #ffffff;
+}
 .btn--dialog {
   padding: 10px 20px;
 }
@@ -1286,6 +1297,37 @@ input.success {
 
 .footer--expanded {
   height: 100vh;
+}
+
+.thankyou-container {
+  min-height: calc(100vh - 64px - 114px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.content-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  gap: 20px;
+  color: #666666;
+  border: 1px solid #e8e8e8;
+  border-radius: 10px;
+  padding: 40px 80px;
+}
+
+.material-symbols-outlined.check_circle--icon {
+  font-size: 80px;
+}
+
+.btn-wrap {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
 }
 
 /*# sourceMappingURL=all.css.map */

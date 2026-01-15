@@ -116,9 +116,23 @@ def get_order_by_number(conn, cursor,user_id: int, order_number: str):
         "status": row["status"]
     }
 
-def mark_order_paid(conn, cursor, order_number: str, status: int):
-    query = "UPDATE orders SET status = %s WHERE order_number = %s"
-    cursor.execute(query, (status, order_number))
+def mark_order_paid(conn, cursor, order_number: str, status: int, message: str = None):
+    """
+    更新訂單付款狀態
+    status: 0=付款成功, 1=付款失敗, 2=尚未付款
+    """
+
+    if message:
+        query = """
+            UPDATE orders
+            SET status = %s, payment_message = %s
+            WHERE order_number = %s
+        """
+        cursor.execute(query, (status, message, order_number))
+    else:
+        query = "UPDATE orders SET status = %s WHERE order_number = %s"
+        cursor.execute(query, (status, order_number))
+        
     conn.commit()
 
 # 防止重複下單
