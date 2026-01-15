@@ -3,6 +3,7 @@ from app.database.db import get_db_conn
 from app.utils.auth import get_current_user
 from app.schemas.schemas import Contact, TripAttraction, Trip, OrderData, CreateOrder
 from app.models.order import create_unpaid_order, tappay_payment, get_order_by_number, mark_order_paid, has_unpaid_order
+from app.models.booking import delete_booking_by_user
 
 router = APIRouter()
 
@@ -64,6 +65,8 @@ async def create_order(
             mark_order_paid(conn, cursor, order_number, status=0, message="付款成功")
             payment_status = 0
             payment_message = "付款成功"
+            # 付款成功後刪除 booking
+            delete_booking_by_user(conn, cursor, user["id"])
         else:
             tappay_message = tappay_result.get("msg", "付款失敗")
             mark_order_paid(conn, cursor, order_number, status=1, message=tappay_message)
