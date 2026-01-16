@@ -10,6 +10,19 @@ import {
 
 let currentBookingData = null;
 
+// 圖片預載
+function preloadImage(imgSrc) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = () => {
+      console.warn(`圖片預載失敗: ${imgSrc}`);
+      resolve(img);
+    };
+    img.src = imgSrc;
+  });
+}
+
 (async function initBookingPage() {
   const isAuthenticated = await requireAuth("redirect");
   if (!isAuthenticated) return;
@@ -52,6 +65,28 @@ async function initBooking() {
   if (!bookingData) return;
   currentBookingData = bookingData;
   renderBooking(bookingData);
+
+  // 預載圖片
+  if (bookingData.attraction?.image) {
+    const preloadPromise = preloadImage(bookingData.attraction.image);
+    // 等待 500ms
+    const minWaitPromise = new Promise((resolve) => setTimeout(resolve, 500));
+
+    // 等待兩者都完成
+    await Promise.all([preloadPromise, minWaitPromise]);
+
+    // 圖片載完，移除 skeleton
+    const imgEl = document.querySelector(".booking__image");
+    const skeleton = document.querySelector(".booking__skeleton");
+
+    if (imgEl) {
+      imgEl.classList.add("loaded");
+    }
+
+    if (skeleton) {
+      skeleton.remove();
+    }
+  }
 }
 
 async function getBookingData() {
@@ -79,6 +114,7 @@ async function getBookingData() {
     return null;
   }
 }
+
 function renderEmptyBooking() {
   const emptyBooking = document.querySelector("#empty-booking");
   const hasBooking = document.querySelector("#has-booking");
@@ -95,7 +131,8 @@ function renderBooking(data) {
   const { attraction, date, time, price } = data;
   const user = getCurrentUser();
 
-  const imgEl = document.querySelector("#booking__image");
+  const imgEl = document.querySelector(".booking__image");
+  const imgContainer = document.querySelector(".info-panel__img");
   const titleEl = document.querySelector("#booking-title");
   const dateEl = document.querySelector("#booking-date");
   const timeEl = document.querySelector("#booking-time");
@@ -107,8 +144,28 @@ function renderBooking(data) {
 
   const confirmTextEl = document.querySelector(".confirm__text");
 
-  imgEl.src = attraction.image;
-  imgEl.alt = attraction.name || "";
+  // 建立 & 插入 skeleton
+  if (imgContainer && imgEl) {
+    const skeleton = document.createElement("div");
+    skeleton.classList.add("booking__skeleton");
+    imgContainer.insertBefore(skeleton, imgEl);
+  }
+
+  // 設定圖片
+  if (imgEl) {
+    imgEl.src = attraction.image;
+    imgEl.alt = attraction.name || "";
+
+    imgEl.onerror = () => {
+      const skeleton = document.querySelector(".booking__skeleton");
+      if (skeleton) {
+        imgEl.src =
+          "https://dummyimage.com/600x400/e8e8e8/757575&text=Image+Failed";
+        imgEl.classList.add("loaded");
+      }
+    };
+  }
+
   titleEl.textContent = `台北一日遊：${attraction.name}`;
   dateEl.textContent = date;
   timeEl.textContent =
