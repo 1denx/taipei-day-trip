@@ -4,19 +4,50 @@ document.addEventListener("DOMContentLoaded", async () => {
   await initAttractionPage();
 });
 
+// 預載圖片，給一個記憶體空間暫存
+const imgPreloadArr = [];
+function preloadImages(images) {
+  images.forEach((image) => {
+    const img = new Image();
+    img.src = image;
+    imgPreloadArr.push(img);
+  });
+}
+
+function hideSkeletonLoading() {
+  const mainContainer = document.getElementById("main-container");
+  const skeletonContainer = document.getElementById("skeleton-container");
+
+  if (mainContainer) mainContainer.hidden = false;
+  if (skeletonContainer) skeletonContainer.hidden = true;
+}
+
 async function initAttractionPage() {
   try {
     const attractionData = await fetchAttractionData();
     // console.log("FETCH", attractionData);
 
     if (!attractionData) {
+      hideSkeletonLoading();
       return;
     }
 
+    // 預載圖片
+    const preloadPromise =
+      attractionData.images?.length > 0
+        ? preloadImages(attractionData.images)
+        : Promise.resolve();
+
+    // 等待 500ms
+    const minWaitPromise = new Promise((resolve) => setTimeout(resolve, 500));
+
+    // 等待兩者都完成
+    await Promise.all([preloadPromise, minWaitPromise]);
+
     renderCarousel(attractionData.images);
     renderAttractionInfo(attractionData);
-
     initBookingPanel();
+    hideSkeletonLoading();
   } catch (err) {
     console.error("初始化失敗", err);
   }
@@ -114,7 +145,6 @@ function initCarousel() {
   const items = track.querySelectorAll("li");
   const btnLeft = document.querySelector(".carousel-control--left");
   const btnRight = document.querySelector(".carousel-control--right");
-  const navContainer = document.querySelector(".carousel-indicators");
   const navWrapper = document.querySelector(".carousel-indicators__wrapper");
   const navItems = document.querySelectorAll(".carousel-indicators__item");
 
@@ -137,9 +167,9 @@ function initCarousel() {
 
     navItems.forEach((nav, index) => {
       if (index === currentIndex) {
-        nav.classList.add("--active");
+        nav.classList.add("carousel-indicators__item--active");
       } else {
-        nav.classList.remove("--active");
+        nav.classList.remove("carousel-indicators__item--active");
       }
     });
 

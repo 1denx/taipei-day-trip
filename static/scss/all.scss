@@ -16,6 +16,7 @@
 @use "components/list-bar";
 @use "components/carousel";
 @use "components/ui-states";
+@use "components/loading";
 
 @use "utilities/flex";
 @use "utilities/spacing";
@@ -24,3 +25,4 @@
 @use "pages/index";
 @use "pages/attraction";
 @use "pages/booking";
+@use "pages/thankyou";

@@ -16,8 +16,22 @@
     color: $color-white;
     padding: 10px 20px;
     font-size: $text-btn-size;
+
     &:hover {
       background-color: $primary-cyan-50;
+    }
+
+    &--outline {
+      background: rgba(255, 255, 2255, 0.5);
+      color: $primary-cyan-70;
+      border: 1px solid $primary-cyan-70;
+      padding: 10px 20px;
+      font-size: $text-btn-size;
+
+      &:hover {
+        background-color: $primary-cyan-70;
+        color: $color-white;
+      }
     }
   }
 

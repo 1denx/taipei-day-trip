@@ -263,13 +263,20 @@ async function fetchAttractions() {
       params.append("category", currentCategory);
     }
 
-    const res = await fetch(`/api/attractions?${params.toString()}`);
+    const fetchPromise = fetch(`/api/attractions?${params.toString()}`).then(
+      (res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}`);
+        }
+        return res.json();
+      }
+    );
 
-    if (!res.ok) {
-      throw new Error(`HTTP ${res.status}`);
-    }
+    // 等待 500ms
+    const minWaitPromise = new Promise((resolve) => setTimeout(resolve, 500));
 
-    const result = await res.json();
+    // 同時執行兩者，等待都完成
+    const [result] = await Promise.all([fetchPromise, minWaitPromise]);
 
     // 確認有抓到資料
     if (!result) {
@@ -306,15 +313,33 @@ function createAttractionCard(attraction) {
   const cover = document.createElement("div");
   cover.classList.add("card__cover");
 
+  // skeleton loading
+  const skeleton = document.createElement("div");
+  skeleton.classList.add("card__skeleton");
+
   const img = document.createElement("img");
   img.classList.add("card__image");
   img.src = attraction.images?.[0] || "";
   img.alt = attraction.name || "";
 
+  // 圖片載入完成後移除 skeleton
+  img.onload = () => {
+    img.classList.add("loaded");
+    skeleton.remove();
+  };
+
+  // 圖片載入失敗
+  img.onerror = () => {
+    skeleton.remove();
+    img.src = "https://dummyimage.com/600x400/e8e8e8/757575&text=Image+Failed";
+    img.classList.add("loaded");
+  };
+
   const title = document.createElement("h3");
   title.classList.add("card__title", "text-content-bold");
   title.textContent = attraction.name || "";
 
+  cover.appendChild(skeleton);
   cover.appendChild(img);
   cover.appendChild(title);
 
