@@ -1,8 +1,14 @@
 @use "../abstracts/variables" as *;
+@use "../abstracts/mixin" as *;
 
 header {
   padding: 10px;
   .header__title {
     color: $primary-cyan-70;
+    @include text-style($text-h2-size, $text-h2-line, $font-weight-bold);
+
+    @include mobile {
+      font-size: 24px;
+    }
   }
 }
