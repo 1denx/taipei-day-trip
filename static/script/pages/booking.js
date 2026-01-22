@@ -248,6 +248,35 @@ async function handleConfirmBooking() {
     }
   });
 
+  // 驗證是否有預訂資料
+  if (!currentBookingData) {
+    alert("沒有可預訂的行程");
+    return;
+  }
+
+  // 二次驗證日期
+  if (!currentBookingData.date) {
+    alert("預訂資料異常，請重新選擇行程");
+    return;
+  }
+
+  const bookingDate = new Date(currentBookingData.date);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  if (bookingDate < today) {
+    alert("此預定日期已過期，請重新選擇行程");
+
+    // 導回原本要預訂的景點頁面
+    const attractionId = currentBookingData.attraction?.id;
+    if (attractionId) {
+      window.location.href = `/attraction/${attractionId}`;
+    } else {
+      window.location.href = "/";
+    }
+    return;
+  }
+
   // 驗證聯絡資訊
   const isContactValid = isValidForm([
     { input: nameInput, validator: isValidName },
@@ -256,11 +285,6 @@ async function handleConfirmBooking() {
   ]);
 
   if (!isContactValid) return;
-
-  if (!currentBookingData) {
-    alert("沒有可預訂的行程");
-    return;
-  }
 
   // 防止重複提交
   confirmBtn.disabled = true;

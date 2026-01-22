@@ -5,6 +5,7 @@ from app.schemas.schemas import UserSignup, UserSignin
 from app.models.user import get_user, create_user
 from app.utils.password import hash_pwd, verify_pwd
 from app.utils.jwt import create_access_token, verify_token
+from pydantic import ValidationError
 
 router = APIRouter(prefix="/api/user")  # prefix 路由前綴
 
@@ -25,6 +26,15 @@ async def signup(user: UserSignup, db=Depends(get_db_conn)):
 		create_user(conn, cursor, user.name, user.email, hash_pwd(user.password))
 
 		return {"ok": True}
+	
+	except ValidationError as e:
+		return JSONResponse(
+			status_code=400,
+			content={
+				"error": True,
+				"message": "輸入資料格式不正確"
+			}
+		)
 
 	except Exception as e:
 		print(f"Error: {str(e)}")
@@ -52,6 +62,15 @@ async def signin(user: UserSignin, db=Depends(get_db_conn)):
 
 		token = create_access_token(existing_user)
 		return {"token": token}
+
+	except ValidationError as e:
+		return JSONResponse(
+			status_code=400,
+			content={
+				"error": True,
+				"message": "輸入資料格式不正確"
+			}
+		)
 
 	except Exception as e:
 		print(f"Error: {str(e)}")

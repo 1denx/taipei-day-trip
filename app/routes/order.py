@@ -4,6 +4,8 @@ from app.utils.auth import get_current_user
 from app.schemas.schemas import Contact, TripAttraction, Trip, OrderData, CreateOrder
 from app.models.order import create_unpaid_order, tappay_payment, get_order_by_number, mark_order_paid, has_unpaid_order
 from app.models.booking import delete_booking_by_user
+from pydantic import ValidationError
+import requests
 
 router = APIRouter()
 
@@ -87,6 +89,32 @@ async def create_order(
     
     except HTTPException:
         raise
+    
+    except ValidationError as e:
+        error_msg = "訂單資料格式不正確"
+
+        for error in e.errors():
+            field == error["loc"][-1]  # 錯誤發生的位置
+            if field == "email":
+                error_msg = "Email 格式不正確"
+            elif field == "phone":
+                error_msg = "電話號碼格式不正確"
+            elif field == "name":
+                error_msg = "姓名不可為空"
+            elif field == "date":
+                if "past" in str(error["msg"]).lower():
+                    error_msg = "無法預訂過去的日期"
+            elif field == "prime":
+                error_msg = "付款資訊不正確"
+            break
+        
+        raise HTTPException(
+            status_code=400,
+            detail={
+                "error": True,
+                "message": error_msg
+            }
+        )
 
     except ValueError as e:
         print(f"輸入驗證錯誤: {e}")

@@ -7,6 +7,7 @@ from app.models.booking import (
 from app.utils.auth import get_current_user
 from app.schemas.schemas import CreateBooking
 from app.database.db import get_db_conn
+from pydantic import ValidationError
 
 router = APIRouter(prefix="/api/booking")
 
@@ -22,6 +23,26 @@ async def create_booking(
     try:
         create_or_update_booking(conn, cursor, user["id"], booking)
         return {"ok": True}
+
+    except ValidationError as e:
+        error_msg = "建立預訂行程失敗"
+
+        # 取具體的錯誤訊息
+        for error in e.errors():
+            if error["loc"][0] == "date":  # 錯誤發生的位置
+                if "past" in str(error["msg"]).lower():
+                    error_msg = "無法預訂過去的日期"
+            else:
+                error_msg = "日期格式不正確"
+            break
+        
+        raise HTTPException(
+            status_code=400,
+            detail={
+                "error": True,
+                "message": error_msg
+            }
+        )
     
     except Exception as e:
         print(f"Error: {str(e)}")
@@ -29,7 +50,7 @@ async def create_booking(
             status_code=400,
             detail={
                 "error": True,
-                "message": "建立預定行程失敗"
+                "message": "建立預訂行程失敗"
             }
         )
 
