@@ -1,0 +1,256 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixin" as *;
+
+.member-container {
+  display: flex;
+  min-height: calc(100vh - 64px - 114px);
+
+  @include mobile {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid $secondary-gray-20;
+    padding: 40px 40px 40px;
+
+    @include pad {
+      padding: 20px;
+    }
+
+    @include mobile {
+      padding: 20px;
+      border-bottom: 1px solid $secondary-gray-20;
+    }
+
+    .member-btn,
+    .history-btn {
+      padding: 10px 20px;
+      font-size: 19px;
+      color: $secondary-gray-70;
+
+      &:hover {
+        background-color: $secondary-gray-10;
+      }
+    }
+
+    .active {
+      padding: 10px 20px;
+      font-size: 19px;
+      color: $primary-cyan-70;
+
+      &:hover {
+        background-color: $secondary-gray-10;
+      }
+    }
+  }
+}
+
+.data-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 40px;
+
+  @include mobile {
+    padding: 20px;
+  }
+
+  .content__title {
+    @include text-style($text-h3-size, $text-h3-line, $font-weight-bold);
+    color: $secondary-gray-70;
+    margin-bottom: 40px;
+  }
+
+  .content__body {
+    flex: 1;
+    overflow-y: auto;
+  }
+}
+
+.user-data {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 40px;
+
+  @include mobile {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+  }
+
+  &__name {
+    @include text-style($text-h4-size, $text-h4-line, $font-weight-bold);
+    color: $secondary-gray-70;
+  }
+
+  &__title {
+    @include text-style($text-h4-size, $text-h4-line, $font-weight-bold);
+    color: $secondary-gray-70;
+  }
+}
+
+.edit-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+
+  @include pad {
+    grid-template-columns: 1fr;
+  }
+
+  @include mobile {
+    grid-template-columns: 1fr;
+  }
+
+  label {
+    @include text-style($text-body-size, $text-body-line, $font-weight-medium);
+    color: $secondary-gray-70;
+    margin-right: 10px;
+  }
+
+  input {
+    width: 200px;
+    height: 38px;
+    border: 1px solid $secondary-gray-20;
+    border-radius: 5px;
+    padding: 10px;
+  }
+
+  &__base-info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &__change-pwd {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+
+  &__btn {
+    grid-column: span 2;
+    justify-self: end;
+    width: 80px;
+
+    @include pad {
+      grid-column: span 1;
+    }
+
+    @include mobile {
+      grid-column: span 1;
+    }
+  }
+}
+
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 2px solid $secondary-gray-10;
+
+  &__header {
+    background-color: $secondary-gray-10;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+
+    th {
+      padding: 16px 12px;
+      text-align: center;
+      @include text-style($text-body-size, $text-body-line, $font-weight-bold);
+      color: $secondary-gray-70;
+      border-bottom: 2px solid $secondary-gray-20;
+      background-color: $secondary-gray-10;
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 1px solid $secondary-gray-20;
+
+      &:hover {
+        background-color: $secondary-gray-10;
+        cursor: pointer;
+      }
+    }
+
+    td {
+      padding: 16px 12px;
+      text-align: center;
+      @include text-style(
+        $text-body-size,
+        $text-body-line,
+        $font-weight-regular
+      );
+      color: $secondary-gray-70;
+    }
+  }
+
+  // 桌機板以下改為卡片式
+  @media (max-width: 900px) {
+    border: none;
+
+    &__header {
+      display: none; // 隱藏表頭
+    }
+
+    tbody {
+      display: block;
+
+      tr {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 20px;
+        border: 1px solid $secondary-gray-20;
+        margin-bottom: 16px;
+        border-radius: 8px;
+      }
+
+      td {
+        display: flex;
+        justify-content: space-between;
+        text-align: left;
+        padding: 8px 0;
+
+        // 手機板顯示欄位名稱
+        &:nth-child(1)::before {
+          content: "訂單編號：";
+        }
+        &:nth-child(2)::before {
+          content: "景點名稱：";
+        }
+        &:nth-child(3)::before {
+          content: "預訂日期：";
+        }
+        &:nth-child(4)::before {
+          content: "預訂時間：";
+        }
+        &:nth-child(5)::before {
+          content: "訂單金額：";
+        }
+        &:nth-child(6)::before {
+          content: "付款狀態：";
+        }
+        &:nth-child(7)::before {
+          content: "付款日期：";
+        }
+
+        &::before {
+          font-weight: $font-weight-bold;
+          color: $secondary-gray-70;
+        }
+      }
+    }
+  }
+}
