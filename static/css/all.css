@@ -292,6 +292,52 @@ header .header__title {
   }
 }
 
+.btn-user {
+  width: 50px;
+  height: 50px;
+}
+
+.user-menu {
+  position: relative;
+}
+
+.user-dropdown {
+  position: absolute;
+  top: 48px;
+  right: 0;
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  width: 140px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.user-dropdown li {
+  list-style: none;
+}
+
+.user-dropdown a,
+.user-dropdown button {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 16px;
+  text-align: center;
+  background: none;
+  color: #666666;
+  border: none;
+  cursor: pointer;
+}
+.user-dropdown a:hover,
+.user-dropdown button:hover {
+  background-color: #eeeeee;
+  opacity: 1;
+}
+
+.hidden {
+  display: none;
+}
+
 .gallery {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));

@@ -1,7 +1,7 @@
 import { showFormMessage } from "./utils.js";
 
 let authItem;
-let logoutItem;
+let userItem;
 let dialog;
 let signinModal;
 let signupModal;
@@ -32,7 +32,7 @@ function resetAuthForms() {
 
 function initAuth() {
   authItem = document.querySelector("#auth-item");
-  logoutItem = document.querySelector("#logout-item");
+  userItem = document.querySelector("#user-item");
   dialog = document.querySelector("#auth-dialog");
   signinModal = document.querySelector(".signin-modal");
   signupModal = document.querySelector(".signup-modal");
@@ -49,7 +49,7 @@ function initAuth() {
   const signinBtn = document.querySelector("#signin-btn");
   const signupBtn = document.querySelector("#signup-btn");
 
-  if (!openAuth || !logoutBtn || !dialog) {
+  if (!openAuth || !dialog) {
     return;
   }
 
@@ -205,10 +205,10 @@ async function checkAuthStatus() {
 function updateAuthUI(user) {
   if (user) {
     authItem.classList.add("btn--nav--hidden");
-    logoutItem.classList.remove("btn--nav--hidden");
+    userItem.classList.remove("btn--nav--hidden");
   } else {
     authItem.classList.remove("btn--nav--hidden");
-    logoutItem.classList.add("btn--nav--hidden");
+    userItem.classList.add("btn--nav--hidden");
   }
 }
 
