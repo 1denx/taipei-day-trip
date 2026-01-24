@@ -1,4 +1,5 @@
 import { requireAuth, getCurrentUser } from "../components/requireAuth.js";
+import { showLoading, hideLoading } from "../components/loading.js";
 
 (async function initThankyouPage() {
   const isAuthenticated = await requireAuth("redirect");
@@ -25,16 +26,22 @@ import { requireAuth, getCurrentUser } from "../components/requireAuth.js";
 })();
 
 async function initThankyou() {
-  const orderData = await getOrderData();
-  console.log("預定資料", orderData);
+  showLoading();
 
-  if (!orderData) {
-    alert("查無訂單資料");
-    window.location.href = "/";
-    return;
+  try {
+    const orderData = await getOrderData();
+    console.log("預定資料", orderData);
+
+    if (!orderData) {
+      alert("查無訂單資料");
+      window.location.href = "/";
+      return;
+    }
+
+    renderThankyou(orderData);
+  } finally {
+    hideLoading();
   }
-
-  renderThankyou(orderData);
 }
 
 async function getOrderData() {

@@ -6,6 +6,7 @@ import {
   isValidName,
 } from "../components/utils.js";
 import { getAuthHeader } from "../components/auth.js";
+import { showLoading, hideLoading } from "../components/loading.js";
 
 // 儲存當前使用者資料
 let currentUserData = null;
@@ -460,6 +461,8 @@ async function changePwd(currentPassword, newPassword) {
 }
 
 async function loadOrderHistory() {
+  showLoading();
+
   try {
     const res = await fetch("/api/orders/history", {
       headers: getAuthHeader(),
@@ -475,6 +478,8 @@ async function loadOrderHistory() {
     renderOrderHistory(result.data || []);
   } catch (err) {
     console.error("載入歷史訂單錯誤：", err);
+  } finally {
+    hideLoading();
   }
 }
 

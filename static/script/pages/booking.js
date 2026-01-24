@@ -7,6 +7,7 @@ import {
   isValidForm,
   clearInputMessage,
 } from "../components/utils.js";
+import { showLoading, hideLoading } from "../components/loading.js";
 
 let currentBookingData = null;
 
@@ -344,6 +345,7 @@ async function handleConfirmBooking() {
 }
 
 async function submitOrder(orderData) {
+  showLoading("訂單處理中...");
   try {
     const token = localStorage.getItem("token");
     const res = await fetch("/api/orders", {
@@ -371,5 +373,7 @@ async function submitOrder(orderData) {
       ok: false,
       message: err.message,
     };
+  } finally {
+    hideLoading();
   }
 }
