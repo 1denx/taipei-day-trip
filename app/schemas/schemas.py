@@ -19,6 +19,9 @@ class UserSignin(BaseModel):
 	email: EmailStr
 	password: str = Field(..., min_length=1)
 
+class UpdateUserName(BaseModel):
+	name: str
+
 class ChangePwd(BaseModel):
 	currentPwd: str
 	newPwd: str

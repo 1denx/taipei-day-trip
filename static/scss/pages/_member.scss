@@ -79,12 +79,43 @@
   @include mobile {
     display: flex;
     flex-direction: column;
+    align-items: center;
+  }
+
+  /* Hover 遮罩 */
+  &__avatar-wrapper {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 0;
+    cursor: pointer;
+    border-radius: 50%;
+    overflow: hidden;
   }
 
   &__avatar {
     width: 100px;
     height: 100px;
-    border-radius: 50%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  /* Hover 遮罩 */
+  &__avatar-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.65);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    color: $color-white;
+    gap: 0.5rem;
   }
 
   &__name {
@@ -96,6 +127,34 @@
     @include text-style($text-h4-size, $text-h4-line, $font-weight-bold);
     color: $secondary-gray-70;
   }
+}
+
+.user-data__avatar-wrapper:hover .user-data__avatar-overlay {
+  opacity: 1;
+}
+
+.user-data__avatar-wrapper:hover .user-data__avatar {
+  transform: scale(1.05);
+}
+
+.user-data__avatar-overlay .material-symbols-outlined {
+  font-size: 36px;
+  font-weight: 300;
+}
+
+.user-data__avatar-overlay span {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* 載入中狀態 */
+.user-data__avatar-wrapper.uploading .user-data__avatar {
+  opacity: 0.5;
+}
+
+.user-data__avatar-wrapper.uploading .user-data__avatar-overlay {
+  opacity: 1;
+  background: rgba(102, 126, 234, 0.8);
 }
 
 .edit-form {
@@ -138,22 +197,14 @@
     margin-bottom: 40px;
   }
 
-  &__btn {
-    grid-column: span 2;
-    justify-self: end;
-    width: 80px;
-    margin-bottom: 40px;
-
-    @include pad {
-      grid-column: span 1;
-      justify-self: start;
-    }
-
-    @include mobile {
-      grid-column: span 1;
-      justify-self: start;
-    }
+  &__btns {
+    display: flex;
+    gap: 1rem;
   }
+}
+
+.is-hidden {
+  display: none;
 }
 
 .order-table {

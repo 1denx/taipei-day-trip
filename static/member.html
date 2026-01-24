@@ -23,11 +23,17 @@
           <h3 class="content__title">會員資料</h3>
           <div class="info-content content__body">
             <div class="user-data">
-              <img
-                class="user-data__avatar"
-                src="/static/images/circle_user.svg"
-                alt="user-avatar"
-              />
+              <div class="user-data__avatar-wrapper" id="avatar-wrapper">
+                <img
+                  class="user-data__avatar"
+                  src="/static/images/circle_user.svg"
+                  alt="user-avatar"
+                />
+                <div class="user-data__avatar-overlay">
+                  <span class="material-symbols-outlined">photo_camera</span>
+                  <span>點擊上傳</span>
+                </div>
+              </div>
               <p class="user-data__name">userName</p>
             </div>
             <form class="edit-form">
@@ -57,13 +63,18 @@
                   <input type="password" id="confirm-pwd" readonly />
                 </div>
               </div>
-              <button
-                type="button"
-                class="btn btn--primary edit-form__btn"
-                id="edit-btn"
-              >
-                編輯
-              </button>
+              <div class="edit-form__btns">
+                <button type="button" class="btn btn--primary" id="edit-btn">
+                  編輯
+                </button>
+                <button
+                  type="button"
+                  class="btn btn--primary--outline"
+                  id="cancel-btn"
+                >
+                  取消
+                </button>
+              </div>
             </form>
           </div>
           <div class="history-content content__body" hidden>

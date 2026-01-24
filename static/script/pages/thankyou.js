@@ -19,7 +19,7 @@ import { requireAuth, getCurrentUser } from "../components/requireAuth.js";
   const queryBtn = document.querySelector("#query-btn");
   if (queryBtn) {
     queryBtn.addEventListener("click", async () => {
-      // window.location.href = "/member";
+      window.location.href = "/member";
     });
   }
 })();
