@@ -530,9 +530,9 @@ function renderOrderHistory(orders) {
     tdStatus.textContent = formatPaymentStatus(order.status);
     tr.appendChild(tdStatus);
 
-    const tdCreatedAt = document.createElement("td");
-    tdCreatedAt.textContent = formatDate(order.created_at || order.createdAt);
-    tr.appendChild(tdCreatedAt);
+    const tdPaidAt = document.createElement("td");
+    tdPaidAt.textContent = formatDate(order.paid_at || order.paidAt);
+    tr.appendChild(tdPaidAt);
 
     tbody.appendChild(tr);
   });
@@ -548,17 +548,17 @@ function formatTime(time) {
 // 格式化付款狀態
 function formatPaymentStatus(status) {
   if (status === 0 || status === "0") {
-    return "待付款";
+    return "付款成功";
   }
   if (status === 1 || status === "1") {
-    return "已付款";
+    return "付款失敗";
   }
 
   // 處理字串型態的 status
   const statusMap = {
-    paid: "已付款",
+    success: "付款成功",
+    fail: "付款失敗",
     pending: "待付款",
-    cancelled: "已取消",
   };
 
   return statusMap[status] || "-";

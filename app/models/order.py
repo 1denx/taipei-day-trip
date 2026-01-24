@@ -122,15 +122,18 @@ def mark_order_paid(conn, cursor, order_number: str, status: int, message: str =
     status: 0=付款成功, 1=付款失敗, 2=尚未付款
     """
 
-    if message:
+    if status == 0:
         query = """
             UPDATE orders
-            SET status = %s, payment_message = %s
+            SET
+                status = %s, 
+                payment_message = %s,
+                paid_at = IFNULL(paid_at, NOW())
             WHERE order_number = %s
         """
         cursor.execute(query, (status, message, order_number))
     else:
-        query = "UPDATE orders SET status = %s WHERE order_number = %s"
+        query = "UPDATE orders SET status = %s, payment_message = %s WHERE order_number = %s"
         cursor.execute(query, (status, order_number))
         
     conn.commit()
@@ -179,7 +182,7 @@ def get_order_history(conn, cursor, user_id: int):
             "booking_time": row["booking_time"],
             "price": row["price"],
             "status": row["status"],
-            "paid_at": row["paid_at"].strftime("%Y-%m-%d %H-:%M:%S") if row["paid_at"] else None,
+            "paid_at": row["paid_at"].strftime("%Y-%m-%d %H:%M:%S") if row["paid_at"] else None,
         })
 
     return orders
