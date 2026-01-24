@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, Request, HTTPException
 from app.database.db import get_db_conn
 from app.utils.auth import get_current_user
 from app.schemas.schemas import Contact, TripAttraction, Trip, OrderData, CreateOrder
-from app.models.order import create_unpaid_order, tappay_payment, get_order_by_number, mark_order_paid, has_unpaid_order
+from app.models.order import create_unpaid_order, tappay_payment, get_order_by_number, mark_order_paid, has_unpaid_order, get_order_history
 from app.models.booking import delete_booking_by_user
 from pydantic import ValidationError
 import requests
@@ -164,6 +164,37 @@ async def get_order(
     
     except Exception as e:
         print(f"取得訂單錯誤: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail={
+                "error": True,
+                "message": "伺服器內部錯誤"
+            }
+        )
+
+@router.get("/api/orders/history")
+async def get_orders_history(
+    request: Request,
+    db=Depends(get_db_conn)
+):
+    conn, cursor = db
+    user = get_current_user(request, db)
+
+    if not user:
+        raise HTTPException(
+            status_code=403,
+            detail={
+                "error": True,
+                "message": "尚未登入系統"
+            }
+        )
+
+    try:
+        orders = get_order_history(conn, cursor, user["id"])
+        return {"data": orders}
+
+    except Exception as e:
+        print(f"取得歷史訂單錯誤: {e}")
         raise HTTPException(
             status_code=500,
             detail={

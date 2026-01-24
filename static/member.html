@@ -16,12 +16,12 @@
       <div class="decor-line"></div>
       <section class="member-container">
         <div class="sidebar">
-          <button type="button" class="btn member-btn">會員資料</button>
+          <button type="button" class="btn member-btn active">會員資料</button>
           <button type="button" class="btn history-btn">歷史訂單</button>
         </div>
         <div class="data-container">
           <h3 class="content__title">會員資料</h3>
-          <div class="info-content content__body" hidden>
+          <div class="info-content content__body">
             <div class="user-data">
               <img
                 class="user-data__avatar"
@@ -34,15 +34,28 @@
               <div class="edit-form__base-info">
                 <h4 class="user-data__title">基本資料</h4>
                 <div>
-                  <label for="">會員信箱</label><input type="text" readonly />
+                  <label for="user-email">會員信箱</label>
+                  <input type="email" id="user-email" readonly />
                 </div>
-                <div><label for="">會員姓名</label><input type="text" /></div>
+                <div>
+                  <label for="user-name">會員姓名</label>
+                  <input type="text" id="user-name" readonly />
+                </div>
               </div>
               <div class="edit-form__change-pwd">
                 <h4 class="user-data__title">變更密碼</h4>
-                <div><label for="">當前的密碼</label><input type="text" /></div>
-                <div><label for="">設定新密碼</label><input type="text" /></div>
-                <div><label for="">確認新密碼</label><input type="text" /></div>
+                <div>
+                  <label for="current-pwd">當前的密碼</label>
+                  <input type="password" id="current-pwd" readonly />
+                </div>
+                <div>
+                  <label for="new-pwd">設定新密碼</label>
+                  <input type="password" id="new-pwd" readonly />
+                </div>
+                <div>
+                  <label for="confirm-pwd">確認新密碼</label>
+                  <input type="password" id="confirm-pwd" readonly />
+                </div>
               </div>
               <button
                 type="button"
@@ -53,7 +66,7 @@
               </button>
             </form>
           </div>
-          <div class="history-content content__body">
+          <div class="history-content content__body" hidden>
             <div class="order-table">
               <div class="order-table__header"></div>
             </div>
@@ -97,5 +110,6 @@
       src="/static/script/components/auth.js"
       defer
     ></script>
+    <script type="module" src="/static/script/pages/member.js" defer></script>
   </body>
 </html>

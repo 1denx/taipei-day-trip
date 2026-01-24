@@ -19,6 +19,10 @@ class UserSignin(BaseModel):
 	email: EmailStr
 	password: str = Field(..., min_length=1)
 
+class ChangePwd(BaseModel):
+	currentPwd: str
+	newPwd: str
+
 class Attraction(BaseModel):
 	id: int
 	name: str

@@ -1444,7 +1444,7 @@ input.success {
   display: flex;
   flex-direction: column;
   flex: 1;
-  padding: 40px;
+  padding: 50px 100px;
 }
 @media (max-width: 600px) {
   .data-container {
@@ -1541,15 +1541,18 @@ input.success {
   grid-column: span 2;
   justify-self: end;
   width: 80px;
+  margin-bottom: 40px;
 }
 @media (min-width: 601px) and (max-width: 900px) {
   .edit-form__btn {
     grid-column: span 1;
+    justify-self: start;
   }
 }
 @media (max-width: 600px) {
   .edit-form__btn {
     grid-column: span 1;
+    justify-self: start;
   }
 }
 

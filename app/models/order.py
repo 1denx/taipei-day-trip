@@ -148,3 +148,41 @@ def has_unpaid_order(conn, cursor, user_id: int):
     result = cursor.fetchone()
 
     return result is not None
+
+def get_order_history(conn, cursor, user_id: int):
+    query = """
+        SELECT
+            o.order_number,
+            o.booking_date,
+            o.booking_time,
+            o.price,
+            o.status,
+            o.paid_at,
+            a.name AS attraction_name
+        FROM orders o
+        JOIN attractions a ON o.attraction_id = a.id
+        WHERE o.user_id = %s
+        ORDER BY o.paid_at DESC;
+    """
+    cursor.execute(query, (user_id,))
+    rows = cursor.fetchall()
+
+    if not rows:
+        return []
+
+    orders = []
+    for row in rows:
+        orders.append({
+            "order_number": row["order_number"],
+            "attraction_name": row["attraction_name"],
+            "booking_date": row["booking_date"].strftime("%Y-%m-%d"),
+            "booking_time": row["booking_time"],
+            "price": row["price"],
+            "status": row["status"],
+            "paid_at": row["paid_at"].strftime("%Y-%m-%d %H-:%M:%S") if row["paid_at"] else None,
+        })
+
+    return orders
+
+
+    
