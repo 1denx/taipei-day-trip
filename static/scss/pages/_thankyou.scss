@@ -1,4 +1,5 @@
 @use "../abstracts/variables" as *;
+@use "../abstracts/mixin" as *;
 
 .thankyou-container {
   min-height: calc(100vh - 64px - 114px);
@@ -19,10 +20,20 @@
   border: 1px solid $secondary-gray-20;
   border-radius: 10px;
   padding: 40px 80px;
+  @include mobile {
+    border: none;
+    padding: 20px;
+  }
 }
 
 .material-symbols-outlined.check_circle--icon {
   font-size: 80px;
+}
+
+.content-remind {
+  @include mobile {
+    font-size: 14px;
+  }
 }
 
 .btn-wrap {

@@ -1,4 +1,5 @@
 @use "../abstracts/variables" as *;
+@use "../abstracts/mixin" as *;
 
 .no-results {
   grid-column: 1/-1;
@@ -17,8 +18,10 @@
 
 .input-message {
   display: inline-block;
-  margin-left: 8px;
   font-size: 12px;
+  @media (max-width: 404px) {
+    margin-top: 10px;
+  }
 }
 
 .form-message.error,
@@ -44,6 +47,9 @@ input.success {
 .form-field {
   display: flex;
   align-items: center;
+  @media (max-width: 404px) {
+    flex-wrap: wrap;
+  }
 }
 
 .tpfield {
@@ -52,6 +58,7 @@ input.success {
   border: 1px solid $secondary-gray-20;
   border-radius: 5px;
   padding: 10px;
+  margin-right: 8px;
   transition: all 0.2s ease-in-out;
 }
 

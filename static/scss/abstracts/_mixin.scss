@@ -4,7 +4,7 @@
 // Breakpoint Mixins
 // =======================
 @mixin mobile {
-  @media (min-width: $breakpoint-mobile-min) and (max-width: $breakpoint-mobile-max) {
+  @media (max-width: $breakpoint-mobile-max) {
     @content;
   }
 }

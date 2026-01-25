@@ -54,6 +54,10 @@
 
     @include text-style($text-body-size, $text-body-line, $font-weight-medium);
 
+    @include mobile {
+      font-size: 14px;
+    }
+
     &--hidden {
       display: none;
     }

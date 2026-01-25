@@ -240,6 +240,19 @@ function renderAttractionInfo(data) {
 function initBookingPanel() {
   const timeRadios = document.querySelectorAll('input[name="time"]');
   const bookingPrice = document.querySelector(".booking-price");
+  const dateInput = document.querySelector('input[name="date"]');
+
+  // 設定日期選擇器的最小值為今天
+  if (dateInput) {
+    const today = new Date();
+    const yyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, "0");
+    const dd = String(today.getDate()).padStart(2, "0");
+    const todayStr = `${yyy}-${mm}-${dd}`;
+
+    dateInput.min = todayStr;
+    dateInput.value = "";
+  }
 
   timeRadios.forEach((radio) => {
     radio.addEventListener("change", () => {
@@ -263,8 +276,19 @@ async function createBooking() {
     const attractionId = window.location.pathname.split("/").pop();
     const dateInput = document.querySelector('input[name="date"]');
     const date = dateInput?.value;
+
     if (!date) {
       alert("請選擇日期");
+      return;
+    }
+
+    // 驗證日期是否為過去
+    const selectedDate = new Date(date);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (selectedDate < today) {
+      alert("無法預訂過去的日期，請重新選擇");
       return;
     }
 

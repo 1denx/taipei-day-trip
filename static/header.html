@@ -6,7 +6,7 @@
   </head>
   <body>
     <header class="container flex-between">
-      <h2 class="header__title text-h2"><a href="/">台北一日遊</a></h2>
+      <h2 class="header__title"><a href="/">台北一日遊</a></h2>
       <ul class="flex-center">
         <li id="booking-btn">
           <button type="button" class="btn btn--nav">預定行程</button>
@@ -16,10 +16,23 @@
             登入/註冊
           </button>
         </li>
-        <li id="logout-item" class="btn--nav--hidden">
-          <button type="button" id="logout-btn" class="btn btn--nav">
-            登出系統
+        <li id="user-item" class="user-menu btn--nav--hidden">
+          <button type="button" id="user-btn" class="btn btn-user">
+            <img
+              id="user-avatar"
+              src="/static/images/circle_user.svg"
+              alt="user-avatar"
+            />
           </button>
+
+          <ul id="user-dropdown" class="user-dropdown hidden">
+            <li><a href="/member">會員資料</a></li>
+            <li>
+              <button type="button" id="logout-btn" class="btn">
+                登出系統
+              </button>
+            </li>
+          </ul>
         </li>
       </ul>
     </header>

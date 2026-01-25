@@ -1,8 +1,60 @@
 @use "../abstracts/variables" as *;
+@use "../abstracts/mixin" as *;
 
 header {
   padding: 10px;
   .header__title {
     color: $primary-cyan-70;
+    @include text-style($text-h2-size, $text-h2-line, $font-weight-bold);
+
+    @include mobile {
+      font-size: 24px;
+    }
   }
+}
+
+.btn-user {
+  width: 50px;
+  height: 50px;
+}
+
+.user-menu {
+  position: relative;
+}
+
+.user-dropdown {
+  position: absolute;
+  top: 48px;
+  right: 0;
+  background: #fff;
+  border: 1px solid $secondary-gray-20;
+  border-radius: 8px;
+  width: 140px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.user-dropdown li {
+  list-style: none;
+}
+
+.user-dropdown a,
+.user-dropdown button {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 16px;
+  text-align: center;
+  background: none;
+  color: $secondary-gray-70;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $secondary-gray-10;
+    opacity: 1;
+  }
+}
+
+.hidden {
+  display: none;
 }

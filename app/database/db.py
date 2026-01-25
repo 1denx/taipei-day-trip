@@ -25,15 +25,20 @@ pool = pooling.MySQLConnectionPool(
 def get_connection():
     try:
         conn = pool.get_connection()
+        # 檢查與 MySQL 的連接是否仍然可以使用
+        conn.ping(reconnect=True, attempts=3, delay=2)
         cursor = conn.cursor(dictionary=True)
         return conn, cursor
     except mysql.connector.Error as e:
         print("資料庫連線錯誤:", e)
+        raise
 
 def get_db_conn():
     conn, cursor = get_connection()
     try:
         yield conn, cursor
     finally:
-        cursor.close()
-        conn.close()
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
