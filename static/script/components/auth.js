@@ -48,6 +48,9 @@ function initAuth() {
   const logoutBtn = document.querySelector("#logout-btn");
   const signinBtn = document.querySelector("#signin-btn");
   const signupBtn = document.querySelector("#signup-btn");
+  const demoBtn = document.querySelector("#demo-btn");
+  const testEmail = "testacc@test.com";
+  const testPwd = "qwe123";
 
   if (!openAuth || !dialog) {
     return;
@@ -78,6 +81,11 @@ function initAuth() {
     if (target === "signup") {
       openSignupModal();
     }
+  });
+
+  demoBtn.addEventListener("click", () => {
+    signinEmailInput.value = testEmail;
+    signinPwdInput.value = testPwd;
   });
 
   signinBtn.addEventListener("click", handleSignin);
