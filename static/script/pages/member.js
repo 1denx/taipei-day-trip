@@ -186,6 +186,13 @@ async function uploadAvatar(file) {
     // 更新頭像顯示
     avatarImg.src = result.data.avatar;
 
+    const headerAvatar = document.querySelector("#user-avatar");
+    if (headerAvatar) {
+      headerAvatar.src = result.data.avatar;
+    }
+
+    localStorage.setItem("userAvatar", result.data.avatar);
+
     // 更新全域使用者資料
     currentUserData = result.data;
     alert("頭像上傳成功");
