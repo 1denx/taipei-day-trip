@@ -48,6 +48,9 @@ function initAuth() {
   const logoutBtn = document.querySelector("#logout-btn");
   const signinBtn = document.querySelector("#signin-btn");
   const signupBtn = document.querySelector("#signup-btn");
+  const demoBtn = document.querySelector("#demo-btn");
+  const testEmail = "testacc@test.com";
+  const testPwd = "qwe123";
 
   if (!openAuth || !dialog) {
     return;
@@ -78,6 +81,11 @@ function initAuth() {
     if (target === "signup") {
       openSignupModal();
     }
+  });
+
+  demoBtn.addEventListener("click", () => {
+    signinEmailInput.value = testEmail;
+    signinPwdInput.value = testPwd;
   });
 
   signinBtn.addEventListener("click", handleSignin);
@@ -173,6 +181,24 @@ async function handleSignin() {
     }
 
     localStorage.setItem("token", data.token);
+
+    try {
+      const userRes = await fetch("/api/user/auth", {
+        headers: { Authorization: `Bearer ${data.token}` },
+      });
+      const userData = await userRes.json();
+      const avatar = userData?.data?.avatar;
+
+      if (avatar) {
+        localStorage.setItem("userAvatar", avatar);
+        const headerAvatar = document.querySelector("#user-avatar");
+        if (headerAvatar) headerAvatar.src = avatar;
+      } else {
+        localStorage.removeItem("userAvatar");
+      }
+    } catch (err) {
+      console.error("取得使用者頭像失敗：", err);
+    }
 
     dialog.close();
     checkAuthStatus();

@@ -122,7 +122,8 @@ async def get_current_user(request: Request, db=Depends(get_db_conn)):
 			"data":{
 				"id": user['id'],
 				"name": user['name'],
-				"email": user['email']
+				"email": user['email'],
+				"avatar": user.get("avatar")
 			}
 		}
 
