@@ -1,7 +1,7 @@
 <div align="center">
   <h1>Taipei Day Trip</h1>
   <p>
-    <a href="http://3.106.102.237/"><b>Website</b></a> ｜
+    <a href="https://tpedaytrip.goanywaynow.com/"><b>Website</b></a> ｜
     <a href="#features"><b>Features</b></a> ｜
     <a href="#tech-stack"><b>Tech Stack</b></a> ｜
     <a href="#demo"><b>Demo</b></a>
